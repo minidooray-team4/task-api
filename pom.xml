@@ -8,7 +8,7 @@
         <version>4.0.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.nhnacademy.tem4</groupId>
+    <groupId>com.nhnacademy.team4</groupId>
     <artifactId>task-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>task-api</name>

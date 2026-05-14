@@ -1,4 +1,4 @@
-package com.nhnacademy.tem4.taskapi;
+package com.nhnacademy.team4.taskapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
