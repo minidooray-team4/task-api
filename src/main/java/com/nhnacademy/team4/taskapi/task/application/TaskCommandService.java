@@ -33,13 +33,14 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
         Project project = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new BusinessException(PROJECT_NOT_FOUND));
 
-        Task newTask = Task.create(
-                command.title(),
-                command.content(),
-                command.milestoneId(),
-                project,
-                command.writerMemberId()
-        );
+        Task newTask = Task.builder()
+                .title(command.title())
+                .content(command.content())
+                .milestoneId(command.milestoneId())
+                .project(project)
+                .writerMemberId(command.writerMemberId())
+                .build();
+
 
         Task savedTask = taskRepository.save(newTask);
 
