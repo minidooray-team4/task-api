@@ -1,8 +1,9 @@
 package com.nhnacademy.team4.taskapi.task.application.usecase;
 
 
-import com.nhnacademy.team4.taskapi.task.application.result.TaskResult;
+import com.nhnacademy.team4.taskapi.task.application.result.TaskDetailResult;
+
 
 public interface GetTaskDetailUseCase {
-    TaskResult createTask(Long taskId);
+    TaskDetailResult getTaskDetail(Long taskId);
 }

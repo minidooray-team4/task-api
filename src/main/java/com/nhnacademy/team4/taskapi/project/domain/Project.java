@@ -2,14 +2,11 @@ package com.nhnacademy.team4.taskapi.project.domain;
 
 import com.nhnacademy.team4.taskapi.common.domain.BaseCreatedAtEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @AllArgsConstructor
