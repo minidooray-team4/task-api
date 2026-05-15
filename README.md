@@ -86,3 +86,87 @@
 | `403 Forbidden` | 권한 없음 |
 | `404 Not Found` | 리소스 없음 |
 | `409 Conflict` | 중복 |
+
+# Task API UseCases
+
+## Project
+
+| UseCase | 입력 | 결과 | 설명 |
+|---|---|---|---|
+| `CreateProjectUseCase` | `CreateProjectCommand` | `ProjectResult` | 프로젝트 생성 |
+| `GetMyProjectsUseCase` | `Long memberId` | `List<ProjectSummaryResult>` | 내 프로젝트 목록 |
+| `GetProjectDetailUseCase` | `Long projectId`, `Long requesterMemberId` | `ProjectDetailResult` | 프로젝트 상세 |
+| `UpdateProjectUseCase` | `UpdateProjectCommand` | `ProjectResult` | 프로젝트 이름/상태 수정 |
+| `AddProjectMemberUseCase` | `AddProjectMemberCommand` | `void` | 프로젝트 멤버 추가 |
+| `GetProjectMembersUseCase` | `Long projectId`, `Long requesterMemberId` | `List<ProjectMemberResult>` | 프로젝트 멤버 목록 |
+
+## Task
+
+| UseCase | 입력 | 결과 | 설명 |
+|---|---|---|---|
+| `CreateTaskUseCase` | `CreateTaskCommand` | `TaskResult` | Task 생성 |
+| `UpdateTaskUseCase` | `UpdateTaskCommand` | `TaskResult` | Task 수정 |
+| `DeleteTaskUseCase` | `Long taskId`, `Long requesterMemberId` | `void` | Task 삭제 |
+| `GetTaskDetailUseCase` | `Long taskId`, `Long requesterMemberId` | `TaskDetailResult` | Task 상세 |
+| `GetProjectTasksUseCase` | `GetProjectTasksQuery` | `List<TaskSummaryResult>` | 프로젝트별 Task 목록 |
+| `AssignMilestoneToTaskUseCase` | `AssignMilestoneToTaskCommand` | `void` | Milestone 지정 |
+| `RemoveMilestoneFromTaskUseCase` | `Long taskId`, `Long requesterMemberId` | `void` | Milestone 제거 |
+
+## Comment
+
+| UseCase | 입력 | 결과 | 설명 |
+|---|---|---|---|
+| `CreateCommentUseCase` | `CreateCommentCommand` | `CommentResult` | 댓글 생성 |
+| `UpdateCommentUseCase` | `UpdateCommentCommand` | `CommentResult` | 댓글 수정 |
+| `DeleteCommentUseCase` | `Long commentId`, `Long requesterMemberId` | `void` | 댓글 삭제 |
+| `GetTaskCommentsUseCase` | `Long taskId`, `Long requesterMemberId` | `List<CommentResult>` | 댓글 목록 |
+
+## Tag
+
+| UseCase | 입력 | 결과 | 설명 |
+|---|---|---|---|
+| `CreateTagUseCase` | `CreateTagCommand` | `TagResult` | Tag 생성 |
+| `UpdateTagUseCase` | `UpdateTagCommand` | `TagResult` | Tag 수정 |
+| `DeleteTagUseCase` | `Long tagId`, `Long requesterMemberId` | `void` | Tag 삭제 |
+| `GetProjectTagsUseCase` | `Long projectId`, `Long requesterMemberId` | `List<TagResult>` | Tag 목록 |
+| `AttachTagToTaskUseCase` | `AttachTagToTaskCommand` | `void` | Tag 연결 |
+| `DetachTagFromTaskUseCase` | `DetachTagFromTaskCommand` | `void` | Tag 제거 |
+
+## Milestone
+
+| UseCase | 입력 | 결과 | 설명 |
+|---|---|---|---|
+| `CreateMilestoneUseCase` | `CreateMilestoneCommand` | `MilestoneResult` | Milestone 생성 |
+| `UpdateMilestoneUseCase` | `UpdateMilestoneCommand` | `MilestoneResult` | Milestone 수정 |
+| `DeleteMilestoneUseCase` | `Long milestoneId`, `Long requesterMemberId` | `void` | Milestone 삭제 |
+| `GetProjectMilestonesUseCase` | `Long projectId`, `Long requesterMemberId` | `List<MilestoneResult>` | Milestone 목록 |
+
+## DTO Fields
+
+| DTO | Fields |
+|---|---|
+| `CreateProjectCommand` | `requesterMemberId`, `name` |
+| `UpdateProjectCommand` | `projectId`, `requesterMemberId`, `name nullable`, `status nullable` |
+| `AddProjectMemberCommand` | `projectId`, `targetMemberId`, `requesterMemberId` |
+| `ProjectResult` | `id`, `name`, `status`, `adminMemberId` |
+| `ProjectSummaryResult` | `id`, `name`, `status`, `adminMemberId` |
+| `ProjectDetailResult` | `id`, `name`, `status`, `adminMemberId` |
+| `ProjectMemberResult` | `id`, `projectId`, `memberId` |
+| `CreateTaskCommand` | `projectId`, `requesterMemberId`, `title`, `content nullable`, `milestoneId nullable` |
+| `UpdateTaskCommand` | `taskId`, `requesterMemberId`, `title nullable`, `content nullable` |
+| `GetProjectTasksQuery` | `projectId`, `requesterMemberId`, `milestoneId nullable`, `tagId nullable` |
+| `AssignMilestoneToTaskCommand` | `taskId`, `milestoneId`, `requesterMemberId` |
+| `TaskResult` | `id`, `projectId`, `title`, `content`, `writerMemberId`, `milestoneId nullable` |
+| `TaskSummaryResult` | `id`, `projectId`, `title`, `writerMemberId`, `milestoneId nullable` |
+| `TaskDetailResult` | `id`, `projectId`, `title`, `content`, `writerMemberId`, `milestoneId nullable`, `tags`, `comments` |
+| `CreateCommentCommand` | `taskId`, `requesterMemberId`, `content` |
+| `UpdateCommentCommand` | `commentId`, `requesterMemberId`, `content` |
+| `CommentResult` | `id`, `taskId`, `writerMemberId`, `content` |
+| `CreateTagCommand` | `projectId`, `requesterMemberId`, `name` |
+| `UpdateTagCommand` | `tagId`, `requesterMemberId`, `name` |
+| `AttachTagToTaskCommand` | `taskId`, `tagId`, `requesterMemberId` |
+| `DetachTagFromTaskCommand` | `taskId`, `tagId`, `requesterMemberId` |
+| `TagResult` | `id`, `projectId`, `name` |
+| `CreateMilestoneCommand` | `projectId`, `requesterMemberId`, `name` |
+| `UpdateMilestoneCommand` | `milestoneId`, `requesterMemberId`, `name` |
+| `MilestoneResult` | `id`, `projectId`, `name` |

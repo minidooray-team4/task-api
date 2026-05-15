@@ -8,5 +8,4 @@ public record TaskResponse(
         Long writerMemberId,
         Long milestoneId
 ) {
-
 }
