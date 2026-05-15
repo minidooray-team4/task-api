@@ -10,4 +10,14 @@ public record TaskResult(
         Long writerMemberId,
         Long milestoneId
 ) {
+    public static TaskResult from(Task task) {
+        return new TaskResult(
+                task.getId(),
+                task.getProject().getId(),
+                task.getTitle(),
+                task.getContent(),
+                task.getWriterMemberId(),
+                task.getMilestoneId()
+        );
+    }
 }
