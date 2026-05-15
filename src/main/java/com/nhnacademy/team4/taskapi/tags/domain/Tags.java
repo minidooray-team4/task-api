@@ -16,9 +16,9 @@ public class Tags extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @Column(name = "project_id", nullable = false)
-//    private Long projectId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "project_id", nullable = false)
+    private Long projectId;
 
     @Column(name = "name",nullable = false)
     private String name;
