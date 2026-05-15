@@ -12,6 +12,8 @@ import com.nhnacademy.team4.taskapi.task.web.response.TaskDetailResponse;
 import com.nhnacademy.team4.taskapi.task.web.response.TaskResponse;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -23,28 +25,29 @@ public class TaskController {
     private final GetTaskDetailUseCase getTaskDetailUseCase;
 
     @PostMapping("/projects/{projectId}/tasks")
-    public TaskResponse addTask(
+    public ResponseEntity<TaskResponse> addTask(
             @PathVariable Long projectId,
             @RequestHeader("X-USER-ID") Long writerMemberId,
             @RequestBody CreateTaskRequest request
     ) {
-        CreateTaskCommand command = request.toCreateTaskCommand(
-                projectId, writerMemberId
-        );
+        CreateTaskCommand command = request.toCreateTaskCommand(projectId, writerMemberId);
 
         TaskResult taskResult = createTaskUseCase.createTask(command);
 
-        return TaskResponse.from(taskResult);
-
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(TaskResponse.from(taskResult));
     }
 
     @GetMapping("/tasks/{taskId}")
-    public TaskDetailResponse getTaskDetails(
+    public ResponseEntity<TaskDetailResponse> getTaskDetails(
             @PathVariable Long taskId
 
     ) {
         TaskDetailResult taskDetail = getTaskDetailUseCase.getTaskDetail(taskId);
-        return TaskDetailResponse.from(taskDetail);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(TaskDetailResponse.from(taskDetail));
 
     }
 
