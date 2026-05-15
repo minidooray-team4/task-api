@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-
 @Entity
 @Table(name = "tasks")
 @Getter
@@ -33,6 +32,16 @@ public class Task extends BaseTimeEntity {
         this.writerMemberId = writerMemberId;
     }
 
+    public static Task create(String title, String content, Long milestoneId, Project project, Long writerMemberId) {
+        return Task.builder()
+                .title(title)
+                .content(content)
+                .milestoneId(milestoneId)
+                .project(project)
+                .writerMemberId(writerMemberId)
+                .build();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,7 +58,7 @@ public class Task extends BaseTimeEntity {
 
     private String content;
 
-    @Column(name = "writer_member_id",nullable = false)
+    @Column(name = "writer_member_id", nullable = false)
     private Long writerMemberId;
 
 

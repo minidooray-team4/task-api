@@ -27,7 +27,7 @@ public class TaskController {
     @PostMapping("/projects/{projectId}/tasks")
     public ResponseEntity<TaskResponse> addTask(
             @PathVariable Long projectId,
-            @RequestHeader("X-USER-ID") Long writerMemberId,
+            @RequestHeader("X-MEMBER-ID") Long writerMemberId,
             @RequestBody CreateTaskRequest request
     ) {
         CreateTaskCommand command = request.toCreateTaskCommand(projectId, writerMemberId);
