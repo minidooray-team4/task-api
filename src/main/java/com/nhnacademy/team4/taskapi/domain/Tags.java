@@ -2,11 +2,12 @@ package com.nhnacademy.team4.taskapi.domain;
 
 import com.nhnacademy.team4.taskapi.common.domain.BaseTimeEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "tags")
 public class Tags extends BaseTimeEntity {
