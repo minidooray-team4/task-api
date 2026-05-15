@@ -31,5 +31,9 @@ public class Project extends BaseCreatedAtEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @Column(name = "admin_member_id",nullable = false)
+    private Long adminMemberId;
+
     
 }
