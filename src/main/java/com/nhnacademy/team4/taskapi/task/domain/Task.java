@@ -6,6 +6,7 @@ import com.nhnacademy.team4.taskapi.project.domain.Project;
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +17,33 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Task extends BaseTimeEntity {
 
+    @Builder
+    private Task(
+            String title,
+            String content,
+            Long milestoneId,
+            Project project,
+            Long writerMemberId
+    ) {
+        this.title = title;
+        this.content = content;
+        this.milestoneId = milestoneId;
+        this.project = project;
+        this.writerMemberId = writerMemberId;
+    }
+
+    public static Task create(String title, String content, Long milestoneId, Project project, Long writerMemberId) {
+        return Task.builder()
+                .title(title)
+                .content(content)
+                .milestoneId(milestoneId)
+                .project(project)
+                .writerMemberId(writerMemberId)
+                .build();
+    }
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JoinColumn(name = "project_id", nullable = false)
@@ -31,8 +58,9 @@ public class Task extends BaseTimeEntity {
 
     private String content;
 
-    @Column(name = "writer_member_id",nullable = false)
+    @Column(name = "writer_member_id", nullable = false)
     private Long writerMemberId;
+
 
 }
 
