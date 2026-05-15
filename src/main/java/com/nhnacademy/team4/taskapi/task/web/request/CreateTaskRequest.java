@@ -1,6 +1,6 @@
 package com.nhnacademy.team4.taskapi.task.web.request;
 
-import com.nhnacademy.team4.taskapi.project.domain.Project;
+
 import com.nhnacademy.team4.taskapi.task.application.command.CreateTaskCommand;
 
 public record CreateTaskRequest(
