@@ -1,5 +1,17 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### Task 생성 API
+POST localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+X-USER-ID: 100
+
+{
+  "title": "API 명세 작성",
+  "content": "Task 생성 API 구현"
+
+}
+
+###
+
+### Task 수정 API
+
 
 ###

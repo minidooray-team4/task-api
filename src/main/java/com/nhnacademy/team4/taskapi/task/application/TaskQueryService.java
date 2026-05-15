@@ -19,8 +19,9 @@ public class TaskQueryService implements GetProjectTasksUseCase, GetTaskDetailUs
         return List.of();
     }
 
+
     @Override
-    public TaskResult createTask(Long taskId) {
+    public TaskResult getTaskDetail(Long taskId) {
         //미구현
         return null;
     }

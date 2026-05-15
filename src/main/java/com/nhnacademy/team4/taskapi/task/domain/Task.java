@@ -6,8 +6,10 @@ import com.nhnacademy.team4.taskapi.project.domain.Project;
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 
 
 @Entity
@@ -16,7 +18,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Task extends BaseTimeEntity {
 
+    @Builder
+    private Task(
+            String title,
+            String content,
+            Long milestoneId,
+            Project project,
+            Long writerMemberId
+    ) {
+        this.title = title;
+        this.content = content;
+        this.milestoneId = milestoneId;
+        this.project = project;
+        this.writerMemberId = writerMemberId;
+    }
+
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JoinColumn(name = "project_id", nullable = false)
