@@ -15,6 +15,7 @@ public enum ErrorCode {
     FORBIDDEN(HttpStatus.FORBIDDEN, "FORBIDDEN", "권한이 없습니다.");
 
 
+
     private final HttpStatus status;
     private final String code;
     private final String message;
