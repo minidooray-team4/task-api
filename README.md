@@ -52,35 +52,84 @@
 | `DeleteMilestoneUseCase` | `Long milestoneId`, `Long requesterMemberId` | `void` | Milestone 삭제 |
 | `GetProjectMilestonesUseCase` | `Long projectId`, `Long requesterMemberId` | `List<MilestoneResult>` | Milestone 목록 |
 
-## DTO Fields
+# DTO Fields
 
-| DTO | Fields |
-|---|---|
-| `CreateProjectCommand` | `requesterMemberId`, `name` |
-| `UpdateProjectCommand` | `projectId`, `requesterMemberId`, `name nullable`, `status nullable` |
-| `AddProjectMemberCommand` | `projectId`, `targetMemberId`, `requesterMemberId` |
-| `ProjectResult` | `id`, `name`, `status`, `adminMemberId` |
-| `ProjectSummaryResult` | `id`, `name`, `status`, `adminMemberId` |
-| `ProjectDetailResult` | `id`, `name`, `status`, `adminMemberId` |
-| `ProjectMemberResult` | `id`, `projectId`, `memberId` |
-| `CreateTaskCommand` | `projectId`, `requesterMemberId`, `title`, `content nullable`, `milestoneId nullable` |
-| `UpdateTaskCommand` | `taskId`, `requesterMemberId`, `title nullable`, `content nullable` |
-| `GetProjectTasksQuery` | `projectId`, `requesterMemberId`, `milestoneId nullable`, `tagId nullable` |
-| `AssignMilestoneToTaskCommand` | `taskId`, `milestoneId`, `requesterMemberId` |
-| `TaskResult` | `id`, `projectId`, `title`, `content`, `writerMemberId`, `milestoneId nullable` |
-| `TaskSummaryResult` | `id`, `projectId`, `title`, `writerMemberId`, `milestoneId nullable` |
-| `TaskDetailResult` | `id`, `projectId`, `title`, `content`, `writerMemberId`, `milestoneId nullable`, `tags`, `comments` |
-| `CreateCommentCommand` | `taskId`, `requesterMemberId`, `content` |
-| `UpdateCommentCommand` | `commentId`, `requesterMemberId`, `content` |
-| `CommentResult` | `id`, `taskId`, `writerMemberId`, `content` |
-| `CreateTagCommand` | `projectId`, `requesterMemberId`, `name` |
-| `UpdateTagCommand` | `tagId`, `requesterMemberId`, `name` |
-| `AttachTagToTaskCommand` | `taskId`, `tagId`, `requesterMemberId` |
-| `DetachTagFromTaskCommand` | `taskId`, `tagId`, `requesterMemberId` |
-| `TagResult` | `id`, `projectId`, `name` |
-| `CreateMilestoneCommand` | `projectId`, `requesterMemberId`, `name` |
-| `UpdateMilestoneCommand` | `milestoneId`, `requesterMemberId`, `name` |
-| `MilestoneResult` | `id`, `projectId`, `name` |
+## Project
+
+| Type    | DTO                       | Fields                                                                 |
+| ------- | ------------------------- | ---------------------------------------------------------------------- |
+| Command | `CreateProjectCommand`    | `requesterMemberId`, `name`                                            |
+| Command | `UpdateProjectCommand`    | `projectId`, `requesterMemberId`, `name(nullable)`, `status(nullable)` |
+| Command | `AddProjectMemberCommand` | `projectId`, `targetMemberId`, `requesterMemberId`                     |
+
+| Type   | DTO                    | Fields                                  |
+| ------ | ---------------------- | --------------------------------------- |
+| Result | `ProjectResult`        | `id`, `name`, `status`, `adminMemberId` |
+| Result | `ProjectSummaryResult` | `id`, `name`, `status`, `adminMemberId` |
+| Result | `ProjectDetailResult`  | `id`, `name`, `status`, `adminMemberId` |
+| Result | `ProjectMemberResult`  | `id`, `projectId`, `memberId`           |
+
+---
+
+## Task
+
+| Type    | DTO                            | Fields                                                                                  |
+| ------- | ------------------------------ | --------------------------------------------------------------------------------------- |
+| Command | `CreateTaskCommand`            | `projectId`, `requesterMemberId`, `title`, `content(nullable)`, `milestoneId(nullable)` |
+| Command | `UpdateTaskCommand`            | `taskId`, `requesterMemberId`, `title(nullable)`, `content(nullable)`                   |
+| Command | `AssignMilestoneToTaskCommand` | `taskId`, `milestoneId`, `requesterMemberId`                                            |
+
+| Type  | DTO                    | Fields                                                                       |
+| ----- | ---------------------- | ---------------------------------------------------------------------------- |
+| Query | `GetProjectTasksQuery` | `projectId`, `requesterMemberId`, `milestoneId(nullable)`, `tagId(nullable)` |
+
+| Type   | DTO                 | Fields                                                                                               |
+| ------ | ------------------- | ---------------------------------------------------------------------------------------------------- |
+| Result | `TaskResult`        | `id`, `projectId`, `title`, `content`, `writerMemberId`, `milestoneId(nullable)`                     |
+| Result | `TaskSummaryResult` | `id`, `projectId`, `title`, `writerMemberId`, `milestoneId(nullable)`                                |
+| Result | `TaskDetailResult`  | `id`, `projectId`, `title`, `content`, `writerMemberId`, `milestoneId(nullable)`, `tags`, `comments` |
+
+---
+
+## Comment
+
+| Type    | DTO                    | Fields                                      |
+| ------- | ---------------------- | ------------------------------------------- |
+| Command | `CreateCommentCommand` | `taskId`, `requesterMemberId`, `content`    |
+| Command | `UpdateCommentCommand` | `commentId`, `requesterMemberId`, `content` |
+
+| Type   | DTO             | Fields                                      |
+| ------ | --------------- | ------------------------------------------- |
+| Result | `CommentResult` | `id`, `taskId`, `writerMemberId`, `content` |
+
+---
+
+## Tag
+
+| Type    | DTO                        | Fields                                   |
+| ------- | -------------------------- | ---------------------------------------- |
+| Command | `CreateTagCommand`         | `projectId`, `requesterMemberId`, `name` |
+| Command | `UpdateTagCommand`         | `tagId`, `requesterMemberId`, `name`     |
+| Command | `AttachTagToTaskCommand`   | `taskId`, `tagId`, `requesterMemberId`   |
+| Command | `DetachTagFromTaskCommand` | `taskId`, `tagId`, `requesterMemberId`   |
+
+| Type   | DTO         | Fields                    |
+| ------ | ----------- | ------------------------- |
+| Result | `TagResult` | `id`, `projectId`, `name` |
+
+---
+
+## Milestone
+
+| Type    | DTO                      | Fields                                     |
+| ------- | ------------------------ | ------------------------------------------ |
+| Command | `CreateMilestoneCommand` | `projectId`, `requesterMemberId`, `name`   |
+| Command | `UpdateMilestoneCommand` | `milestoneId`, `requesterMemberId`, `name` |
+
+| Type   | DTO               | Fields                    |
+| ------ | ----------------- | ------------------------- |
+| Result | `MilestoneResult` | `id`, `projectId`, `name` |
+
 
 # Task API & DTO
 
