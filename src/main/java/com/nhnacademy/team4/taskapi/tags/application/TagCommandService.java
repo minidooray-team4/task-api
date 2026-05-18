@@ -1,6 +1,9 @@
 package com.nhnacademy.team4.taskapi.tags.application;
 
 
+import com.nhnacademy.team4.taskapi.global.exception.BusinessException;
+import com.nhnacademy.team4.taskapi.global.exception.ErrorCode;
+import com.nhnacademy.team4.taskapi.project.domain.Project;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
 import com.nhnacademy.team4.taskapi.tags.application.command.AttachTagToTaskCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.CreateTagCommand;
@@ -26,7 +29,11 @@ public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, De
     @Override
     public TagResult createTag(CreateTagCommand command) {
         Project project=projectRepository.findById(command.projectId())
-                .orElseThrow(()->new RuntimeException("Project not found"));
+                .orElseThrow(()->new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+
+        if(tagRepository.existsByProjectIdAndName(command.projectId(),command.name())){
+            throw new BusinessException(ErrorCode.TAG_ALREADY_EXISTS);
+        }
 
         Tag tag=Tag.create(project,command.name());
         Tag savedTag=tagRepository.save(tag);
