@@ -12,6 +12,15 @@ PUT http://localhost:8080/api/projects/5/members/5
 Content-Type: application/json
 X-MEMBER-ID: 100
 
+### Project 수정
+PATCH http://localhost:8080/api/projects/5
+Content-Type: application/json
+X-MEMBER-ID: 100
+
+{
+  "name": "Project Big Dorary2",
+  "status": "CLOSED"
+}
 
 
 
