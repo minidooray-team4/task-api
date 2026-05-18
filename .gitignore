@@ -37,3 +37,8 @@ build/
 
 ### ETC ###
 .serena
+
+
+
+### local profile ###
+/src/main/resources/application-local.yaml
