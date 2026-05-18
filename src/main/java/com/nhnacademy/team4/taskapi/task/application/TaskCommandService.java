@@ -40,7 +40,6 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
         Task savedTask = taskRepository.save(newTask);
 
         return TaskResult.from(savedTask);
-
     }
 
 

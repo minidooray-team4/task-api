@@ -16,6 +16,9 @@ public class TagQueryService implements GetProjectTagsUseCase {
 
     @Override
     public List<TagResult> getProjectTags(Long projectId, Long requesterMemberId) {
-        return List.of();
+        return tagRepository.findAllByProjectId(projectId)
+                .stream()
+                .map(TagResult::from)
+                .toList();
     }
 }
