@@ -1,10 +1,27 @@
 package com.nhnacademy.team4.taskapi.task.application;
 
+import com.nhnacademy.team4.taskapi.global.exception.BusinessException;
+
+import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
+import com.nhnacademy.team4.taskapi.project.domain.Project;
 import com.nhnacademy.team4.taskapi.task.application.command.*;
 import com.nhnacademy.team4.taskapi.task.application.result.TaskResult;
 import com.nhnacademy.team4.taskapi.task.application.usecase.*;
+import com.nhnacademy.team4.taskapi.task.domain.Task;
+import com.nhnacademy.team4.taskapi.task.infrastructure.TaskRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateTaskUseCase, DeleteTaskUseCase, RemoveMilestoneFromTaskUseCase, UpdateTaskUseCase {
+import static com.nhnacademy.team4.taskapi.global.exception.ErrorCode.PROJECT_NOT_FOUND;
+
+
+@Service
+@RequiredArgsConstructor
+public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateTaskUseCase, RemoveMilestoneFromTaskUseCase, UpdateTaskUseCase,DeleteTaskUseCase{
+
+    private final TaskRepository taskRepository;
+    private final ProjectRepository projectRepository;
+
     @Override
     public TaskResult assignMilestoneToTask(AssignMilestoneToTaskCommand command) {
         //미구현
@@ -13,24 +30,34 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
 
     @Override
     public TaskResult createTask(CreateTaskCommand command) {
-        //미구현
-        return null;
+
+        Project project = projectRepository.findById(command.projectId())
+                .orElseThrow(() -> new BusinessException(PROJECT_NOT_FOUND));
+
+        Task newTask = Task.create(command.title(), command.content(), command.milestoneId(), project, command.requesterMemberId());
+
+
+        Task savedTask = taskRepository.save(newTask);
+
+        return TaskResult.from(savedTask);
+
     }
 
-    @Override
-    public void deleteTask(DeleteTaskCommand command) {
-        //미구현
-    }
-
-    @Override
-    public TaskResult removeMilestoneFromTask(RemoveMilestoneFromTaskCommand command) {
-        //미구현
-        return null;
-    }
 
     @Override
     public TaskResult updateTask(UpdateTaskCommand command) {
         //미구현
         return null;
+    }
+
+    @Override
+    public TaskResult removeMilestoneFromTask(Long taskId, Long requesterMemberId) {
+        //미구현
+        return null;
+    }
+
+    @Override
+    public void deleteTask(Long taskId, Long requesterMemberId) {
+        //미구현
     }
 }
