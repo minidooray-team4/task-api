@@ -1,0 +1,16 @@
+package com.nhnacademy.team4.taskapi.project.application.result;
+
+import com.nhnacademy.team4.taskapi.milestone.application.result.MilestoneResult;
+import com.nhnacademy.team4.taskapi.project.domain.Status;
+import com.nhnacademy.team4.taskapi.task.application.result.TagResult;
+import com.nhnacademy.team4.taskapi.task.application.result.TaskSummaryResult;
+
+import java.util.List;
+
+public record ProjectResult(
+        Long id,
+        String name,
+        Status status,
+        Long adminMemberId
+) {
+}

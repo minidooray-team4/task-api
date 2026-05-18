@@ -8,17 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Getter
 @Table(name = "projects")
 public class Project extends BaseCreatedAtEntity {
-
-    public enum Status {
-        ACTIVE,DORMANT,CLOSED
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +26,8 @@ public class Project extends BaseCreatedAtEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(name = "admin_member_id",nullable = false)
+    @Column(name = "admin_member_id", nullable = false)
     private Long adminMemberId;
 
-    
+
 }
