@@ -4,16 +4,13 @@ import com.nhnacademy.team4.taskapi.common.domain.BaseTimeEntity;
 import com.nhnacademy.team4.taskapi.project.domain.Project;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-
-import javax.swing.text.html.HTML;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tags")
-public class Tags extends BaseTimeEntity {
+public class Tag extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +24,13 @@ public class Tags extends BaseTimeEntity {
     private String name;
 
     @Builder
-    private Tags(Project project,String name){
+    private Tag(Project project, String name){
         this.project=project;
         this.name=name;
     }
 
-    public static Tags create(Project project,String name){
-        return Tags.builder()
+    public static Tag create(Project project, String name){
+        return Tag.builder()
                 .project(project)
                 .name(name)
                 .build();
