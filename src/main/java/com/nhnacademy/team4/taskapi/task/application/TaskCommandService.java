@@ -13,11 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static com.nhnacademy.team4.taskapi.global.exception.ErrorCode.PROJECT_NOT_FOUND;
-import static com.nhnacademy.team4.taskapi.global.exception.ErrorCode.TASK_NOT_FOUND;
+
 
 @Service
 @RequiredArgsConstructor
-public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateTaskUseCase, DeleteTaskUseCase, RemoveMilestoneFromTaskUseCase, UpdateTaskUseCase {
+public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateTaskUseCase, RemoveMilestoneFromTaskUseCase, UpdateTaskUseCase,DeleteTaskUseCase{
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
@@ -34,7 +34,7 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
         Project project = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new BusinessException(PROJECT_NOT_FOUND));
 
-        Task newTask = Task.create(command.title(), command.content(), command.milestoneId(), project, command.writerMemberId());
+        Task newTask = Task.create(command.title(), command.content(), command.milestoneId(), project, command.requesterMemberId());
 
 
         Task savedTask = taskRepository.save(newTask);
@@ -43,24 +43,21 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
 
     }
 
-    @Override
-    public void deleteTask(DeleteTaskCommand command) {
-        Task task = taskRepository.findById(command.taskId())
-                .orElseThrow(() -> new BusinessException(TASK_NOT_FOUND));
-
-        taskRepository.delete(task);
-
-    }
-
-    @Override
-    public TaskResult removeMilestoneFromTask(RemoveMilestoneFromTaskCommand command) {
-        //미구현
-        return null;
-    }
 
     @Override
     public TaskResult updateTask(UpdateTaskCommand command) {
         //미구현
         return null;
+    }
+
+    @Override
+    public TaskResult removeMilestoneFromTask(Long taskId, Long requesterMemberId) {
+        //미구현
+        return null;
+    }
+
+    @Override
+    public void deleteTask(Long taskId, Long requesterMemberId) {
+        //미구현
     }
 }
