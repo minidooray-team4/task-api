@@ -13,5 +13,5 @@ X-MEMBER-ID: 100
 ### Task 수정 API
 GET http://localhost:8080/api/tasks/6
 Content-Type: application/json
-
+X-MEMBER-ID: 100
 ###
