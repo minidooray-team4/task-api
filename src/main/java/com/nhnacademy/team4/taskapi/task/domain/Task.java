@@ -32,13 +32,13 @@ public class Task extends BaseTimeEntity {
         this.writerMemberId = writerMemberId;
     }
 
-    public static Task create(String title, String content, Long milestoneId, Project project, Long writerMemberId) {
+    public static Task create(String title, String content, Long milestoneId, Project project, Long requesterMemberId) {
         return Task.builder()
                 .title(title)
                 .content(content)
                 .milestoneId(milestoneId)
                 .project(project)
-                .writerMemberId(writerMemberId)
+                .writerMemberId(requesterMemberId)
                 .build();
     }
 
