@@ -1,0 +1,17 @@
+### Project 생성 API
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+X-MEMBER-ID: 100
+
+{
+  "name": "Project Mini Dorary"
+}
+
+### Project 멤버 추가 API
+PUT http://localhost:8080/api/projects/1/members/5
+Content-Type: application/json
+X-MEMBER-ID: 1
+
+
+
+

@@ -1,19 +1,37 @@
 package com.nhnacademy.team4.taskapi.project.domain;
 
 import com.nhnacademy.team4.taskapi.common.domain.BaseCreatedAtEntity;
+import com.nhnacademy.team4.taskapi.common.domain.BaseTimeEntity;
+import com.nhnacademy.team4.taskapi.project.application.command.CreateProjectCommand;
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Getter
 @Table(name = "projects")
-public class Project extends BaseCreatedAtEntity {
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Project extends BaseTimeEntity {
+
+    @Builder
+    private Project(String name,Status status,Long adminMemberId){
+        this.name = name;
+        this.status = status;
+        this.adminMemberId = adminMemberId;
+    }
+
+    public static Project create(String name,Long adminMemberId) {
+        return Project.builder()
+                .name(name)
+                .status(Status.ACTIVE)
+                .adminMemberId(adminMemberId)
+                .build();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +40,6 @@ public class Project extends BaseCreatedAtEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 
