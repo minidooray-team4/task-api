@@ -1,6 +1,7 @@
 package com.nhnacademy.team4.taskapi.tags.application;
 
-import com.nhnacademy.team4.taskapi.project.application.infrastructure.ProjectRepository;
+
+import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
 import com.nhnacademy.team4.taskapi.tags.application.command.AttachTagToTaskCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.CreateTagCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.DetachTagFromTaskCommand;
