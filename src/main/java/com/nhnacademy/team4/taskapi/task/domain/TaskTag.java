@@ -7,7 +7,6 @@ import lombok.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Table(name = "task_tags")
 public class TaskTag {
 
@@ -17,25 +16,28 @@ public class TaskTag {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
     @JoinColumn(name = "task_id",nullable = false)
     private Task task;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id",insertable = false,updatable = false)
     @JoinColumn(name = "tag_id",nullable = false)
     private Tag tag;
 
+    @Column(name = "project_id",nullable = false)
+    private Long projectId;
+
     @Builder
-    private TaskTag(Task task,Tag tag){
+    private TaskTag(Task task,Tag tag,Long projectId){
         this.task=task;
         this.tag=tag;
+        this.projectId=projectId;
     }
 
-    public static TaskTag create(Task task,Tag tag){
+    public static TaskTag create(Task task,Tag tag,Long projectId){
         return TaskTag.builder()
                 .task(task)
                 .tag(tag)
+                .projectId(projectId)
                 .build();
     }
 

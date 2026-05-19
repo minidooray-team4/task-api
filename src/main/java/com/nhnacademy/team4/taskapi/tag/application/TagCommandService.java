@@ -17,11 +17,12 @@ import com.nhnacademy.team4.taskapi.task.domain.Task;
 import com.nhnacademy.team4.taskapi.task.domain.TaskTag;
 import com.nhnacademy.team4.taskapi.task.infrastructure.TaskRepository;
 import com.nhnacademy.team4.taskapi.task.infrastructure.TaskTagRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 //상태변경 서비스
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, DeleteTagUseCase, AttachTagToTaskUseCase, DetachTagFromTaskUseCase {
@@ -54,7 +55,6 @@ public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, De
         tagRepository.delete(tag);
     }
 
-    @Transactional
     @Override
     public TagResult updateTag(UpdateTagCommand command) {
         Tag tag=tagRepository.findById(command.tagId())
@@ -73,7 +73,11 @@ public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, De
         Tag tag=tagRepository.findById(command.tagId())
                 .orElseThrow(()->new BusinessException(ErrorCode.TAG_NOT_FOUND));
 
-        TaskTag taskTag=TaskTag.create(task,tag);
+        if(!task.getProject().getId().equals(tag.getProject().getId())){
+            throw new BusinessException(ErrorCode.FORBIDDEN);
+        }
+
+        TaskTag taskTag=TaskTag.create(task,tag,task.getProject().getId());
         taskTagRepository.save(taskTag);
 
         }
