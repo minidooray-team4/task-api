@@ -15,7 +15,7 @@ import com.nhnacademy.team4.taskapi.project.domain.ProjectMembers;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectMemberRepository;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
 import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
-import com.nhnacademy.team4.taskapi.tags.infrastructure.persistence.TagRepository;
+import com.nhnacademy.team4.taskapi.tags.persistence.TagRepository;
 import com.nhnacademy.team4.taskapi.task.application.result.TaskSummaryResult;
 import com.nhnacademy.team4.taskapi.task.infrastructure.TaskRepository;
 import lombok.RequiredArgsConstructor;

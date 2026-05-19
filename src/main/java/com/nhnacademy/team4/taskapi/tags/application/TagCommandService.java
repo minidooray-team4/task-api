@@ -12,18 +12,24 @@ import com.nhnacademy.team4.taskapi.tags.application.command.UpdateTagCommand;
 import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
 import com.nhnacademy.team4.taskapi.tags.application.usecase.*;
 import com.nhnacademy.team4.taskapi.tags.domain.Tag;
-import com.nhnacademy.team4.taskapi.tags.infrastructure.persistence.TagRepository;
-import jakarta.transaction.Transactional;
-
+import com.nhnacademy.team4.taskapi.tags.persistence.TagRepository;
+import com.nhnacademy.team4.taskapi.task.domain.Task;
+import com.nhnacademy.team4.taskapi.task.domain.TaskTag;
+import com.nhnacademy.team4.taskapi.task.infrastructure.TaskRepository;
+import com.nhnacademy.team4.taskapi.task.infrastructure.TaskTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 //상태변경 서비스
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, DeleteTagUseCase, AttachTagToTaskUseCase, DetachTagFromTaskUseCase {
 
+    private final TaskRepository taskRepository;
     private final TagRepository tagRepository;
+    private final TaskTagRepository taskTagRepository;
     private final ProjectRepository projectRepository;
 
 
@@ -49,7 +55,6 @@ public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, De
         tagRepository.delete(tag);
     }
 
-    @Transactional
     @Override
     public TagResult updateTag(UpdateTagCommand command) {
         Tag tag=tagRepository.findById(command.tagId())
@@ -62,10 +67,25 @@ public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, De
     @Override
     public void attachTagToTask(AttachTagToTaskCommand command) {
         //TODO task_tags 구현 후
-    }
+        Task task=taskRepository.findById(command.taskId())
+                .orElseThrow(()->new BusinessException(ErrorCode.TASK_NOT_FOUND));
+
+        Tag tag=tagRepository.findById(command.tagId())
+                .orElseThrow(()->new BusinessException(ErrorCode.TAG_NOT_FOUND));
+
+        if(!task.getProject().getId().equals(tag.getProject().getId())){
+            throw new BusinessException(ErrorCode.FORBIDDEN);
+        }
+
+        TaskTag taskTag=TaskTag.create(task,tag,task.getProject().getId());
+        taskTagRepository.save(taskTag);
+
+        }
 
     @Override
     public void detachTagFromTask(DetachTagFromTaskCommand command) {
         //TODO task_tags 구현 후
+        taskTagRepository.deleteByTaskIdAndTagId(command.taskId(),command.tagId());
     }
+
 }
