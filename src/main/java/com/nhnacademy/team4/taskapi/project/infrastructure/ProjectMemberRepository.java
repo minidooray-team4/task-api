@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ProjectMemberRepository extends JpaRepository<ProjectMembers, Long> {
-    boolean existsByProject_IdAndMemberId(
+    boolean existsByProjectIdAndMemberId(
             Long projectId,
             Long memberId
     );

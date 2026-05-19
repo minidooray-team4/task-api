@@ -20,39 +20,29 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class ProjectCommandService implements AddProjectMemberUseCase, CreateProjectUseCase, UpdateProjectUseCase {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMemberRepository projectMemberRepositroy;
+    private final ProjectMemberRepository projectMemberRepository;
 
     @Override
     public void addProjectMember(AddProjectMemberCommand command) {
 
-        log.info("ProjectId : {}", command.projectId());
         Project project = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
         // 관리자 권한 확인
-        if (!project.getAdminMemberId().equals(command.requesterMemberId())) {
-            throw new BusinessException(ErrorCode.FORBIDDEN);
-        }
+        validateProjectAdmin(project, command.requesterMemberId());
 
         // 멤버 존재유무 판별
-        boolean exists = projectMemberRepositroy.existsByProject_IdAndMemberId(
-                command.projectId(), command.targetMemberId()
-        );
-
-        if (exists) {
-            throw new BusinessException(ErrorCode.PROJECT_MEMBER_ALREADY_EXISTS);
-        }
+        validateProjectMemberNotExist(project.getId(), command.requesterMemberId());
 
         ProjectMembers projectMembers = ProjectMembers.create(project, command.targetMemberId());
 
-        projectMemberRepositroy.save(projectMembers);
+        projectMemberRepository.save(projectMembers);
     }
 
     @Override
@@ -69,7 +59,7 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
         ProjectMembers adminMember =
                 ProjectMembers.create(saved, command.requesterMemberId());
 
-        projectMemberRepositroy.save(adminMember);
+        projectMemberRepository.save(adminMember);
 
         return ProjectSummaryResult.from(saved);
 
@@ -82,13 +72,23 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
                 .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
         // 관리자 권한 확인
-        if (!project.getAdminMemberId().equals(command.requesterMemberId())) {
-            throw new BusinessException(ErrorCode.FORBIDDEN);
-        }
+        validateProjectAdmin(project, command.requesterMemberId());
 
         project.update(command.name(), command.status());
 
         return ProjectSummaryResult.from(project);
+    }
+
+    private void validateProjectAdmin(Project project, Long requesterMemberId) {
+        if (!project.getAdminMemberId().equals(requesterMemberId)) {
+            throw new BusinessException(ErrorCode.FORBIDDEN);
+        }
+    }
+
+    private void validateProjectMemberNotExist(Long projectId, Long requesterMemberId) {
+        if (projectMemberRepository.existsByProjectIdAndMemberId(projectId, requesterMemberId)) {
+            throw new BusinessException(ErrorCode.PROJECT_MEMBER_ALREADY_EXISTS);
+        }
     }
 
 

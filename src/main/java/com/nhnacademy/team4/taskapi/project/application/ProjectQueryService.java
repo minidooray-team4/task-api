@@ -61,7 +61,7 @@ public class ProjectQueryService implements GetMyProjectUseCase, GetProjectDetai
         List<ProjectMemberResult> members = projectMemberRepository.findByProjectId(projectId)
                 .stream().map(ProjectMemberResult::from).toList();
 
-        List<TaskSummaryResult> tasks = taskRepository.findByProjectId(projectId)
+        List<TaskSummaryResult> tasks = taskRepository.findByProject_Id(projectId)
                 .stream().map(TaskSummaryResult::from).toList();
 
         List<TagResult> tags = tagRepository.findAllByProjectId(projectId)
@@ -94,7 +94,7 @@ public class ProjectQueryService implements GetMyProjectUseCase, GetProjectDetai
     }
 
     private void validateProjectAccess(Long projectId, Long memberId) {
-        boolean isMember = projectMemberRepository.existsByProject_IdAndMemberId(projectId, memberId);
+        boolean isMember = projectMemberRepository.existsByProjectIdAndMemberId(projectId, memberId);
 
         if (!isMember) {
             throw new BusinessException(ErrorCode.FORBIDDEN);

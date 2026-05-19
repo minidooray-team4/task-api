@@ -16,6 +16,7 @@ import com.nhnacademy.team4.taskapi.task.infrastructure.TaskRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ import static com.nhnacademy.team4.taskapi.global.exception.ErrorCode.TASK_NOT_F
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class TaskQueryService implements GetProjectTasksUseCase, GetTaskDetailUseCase {
 
     private final TaskRepository taskRepository;
