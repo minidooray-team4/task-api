@@ -11,7 +11,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "tags")
+@Table(name = "tags",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        // 프로젝트내 태그명 중복 방지
+                        name = "uk_tags_project_name",
+                        columnNames = {"project_id", "name"}
+                ),
+                @UniqueConstraint(
+                        // 복합 FK에 사용
+                        name = "uk_tags_project_id",
+                        columnNames = {"project_id", "id"}
+                )
+        }
+)
+
 public class Tag extends BaseTimeEntity {
 
     @Id
@@ -22,23 +36,23 @@ public class Tag extends BaseTimeEntity {
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Builder
-    private Tag(Project project, String name){
-        this.project=project;
-        this.name=name;
+    private Tag(Project project, String name) {
+        this.project = project;
+        this.name = name;
     }
 
-    public static Tag create(Project project, String name){
+    public static Tag create(Project project, String name) {
         return Tag.builder()
                 .project(project)
                 .name(name)
                 .build();
     }
 
-    public void rename(String name){
-        this.name=name;
+    public void rename(String name) {
+        this.name = name;
     }
 }

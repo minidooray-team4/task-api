@@ -14,17 +14,17 @@ import lombok.NoArgsConstructor;
 public class Comment extends BaseTimeEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
     private Task task;
 
-    @Column(name = "writer_member_id",nullable = false)
-    private String writerMemberId;
+    @Column(name = "writer_member_id", nullable = false)
+    private Long writerMemberId;
 
     private String content;
-
 
 
 }

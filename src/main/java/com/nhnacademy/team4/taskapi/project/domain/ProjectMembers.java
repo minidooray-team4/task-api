@@ -6,9 +6,17 @@ import lombok.*;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "project_members")
+@Table(
+        name = "project_members",
+        uniqueConstraints = {
+                // 같은 프로젝트에 같은 멤버가 중복등록 방지
+                @UniqueConstraint(
+                        name = "uk_project_members_project_member",
+                        columnNames = {"project_id", "member_id"}
+                )
+        }
+)
 public class ProjectMembers extends BaseCreatedAtEntity {
 
     @Builder
