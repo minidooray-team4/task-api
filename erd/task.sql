@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS `projects` (
                                           `name` VARCHAR(100) NOT NULL,
                                           `status` ENUM('ACTIVE', 'DORMANT', 'CLOSED') NOT NULL DEFAULT 'ACTIVE',
                                           `admin_member_id` BIGINT NOT NULL,
-                                          `created_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-                                          `updated_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
-                                              ON UPDATE CURRENT_TIMESTAMP(6),
+                                          `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                          `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                                              ON UPDATE CURRENT_TIMESTAMP,
                                           PRIMARY KEY (`id`),
                                           INDEX `idx_projects_admin_member_id` (`admin_member_id`),
                                           INDEX `idx_projects_status` (`status`)
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `project_members` (
                                                  `id` BIGINT NOT NULL AUTO_INCREMENT,
                                                  `project_id` BIGINT NOT NULL,
                                                  `member_id` BIGINT NOT NULL,
-                                                 `created_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+                                                 `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
                                                  PRIMARY KEY (`id`),
 
@@ -49,9 +49,9 @@ CREATE TABLE IF NOT EXISTS `milestones` (
                                             `project_id` BIGINT NOT NULL,
                                             `name` VARCHAR(100) NOT NULL,
                                             `due_date` DATE NULL,
-                                            `created_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-                                            `updated_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
-                                                ON UPDATE CURRENT_TIMESTAMP(6),
+                                            `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                            `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                                                ON UPDATE CURRENT_TIMESTAMP,
 
                                             PRIMARY KEY (`id`),
 
@@ -77,9 +77,9 @@ CREATE TABLE IF NOT EXISTS `tasks` (
                                        `title` VARCHAR(200) NOT NULL,
                                        `content` TEXT NULL,
                                        `writer_member_id` BIGINT NOT NULL,
-                                       `created_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-                                       `updated_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
-                                           ON UPDATE CURRENT_TIMESTAMP(6),
+                                       `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                       `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                                           ON UPDATE CURRENT_TIMESTAMP,
 
                                        PRIMARY KEY (`id`),
 
@@ -101,8 +101,8 @@ CREATE TABLE IF NOT EXISTS `comments` (
                                           `task_id` BIGINT NOT NULL,
                                           `writer_member_id` BIGINT NOT NULL,
                                           `content` TEXT NOT NULL,
-                                          `created_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-                                          `updated_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+                                          `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                          `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                           PRIMARY KEY (`id`),
                                           KEY `idx_comments_task_id` (`task_id`),
                                           KEY `idx_comments_writer_member_id` (`writer_member_id`),
@@ -119,8 +119,8 @@ CREATE TABLE IF NOT EXISTS `tags` (
                                       `id` BIGINT NOT NULL AUTO_INCREMENT,
                                       `project_id` BIGINT NOT NULL,
                                       `name` VARCHAR(50) NOT NULL,
-                                      `created_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-                                      `updated_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+                                      `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                      `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                       PRIMARY KEY (`id`),
                                       UNIQUE KEY `uk_tags_project_name` (`project_id`, `name`),
 
