@@ -15,7 +15,7 @@ public record MilestoneResponse(
                 milestoneResult.id(),
                 milestoneResult.projectId(),
                 milestoneResult.name(),
-                milestoneResult.duDate()
+                milestoneResult.dueDate()
         );
     }
 }

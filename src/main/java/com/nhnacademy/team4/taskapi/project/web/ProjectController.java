@@ -12,6 +12,7 @@ import com.nhnacademy.team4.taskapi.project.domain.Project;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectMemberRepository;
 import com.nhnacademy.team4.taskapi.project.web.request.CreateProjectRequest;
 import com.nhnacademy.team4.taskapi.project.web.request.UpdateProjectRequest;
+import com.nhnacademy.team4.taskapi.project.web.response.CreatedProjectResponse;
 import com.nhnacademy.team4.taskapi.project.web.response.ProjectDetailResponse;
 import com.nhnacademy.team4.taskapi.project.web.response.ProjectMemberResponse;
 import com.nhnacademy.team4.taskapi.project.web.response.ProjectSummaryResponse;
@@ -35,16 +36,16 @@ public class ProjectController {
     private final GetProjectMembersUseCase getProjectMembersUseCase;
 
     @PostMapping
-    public ResponseEntity<ProjectSummaryResponse> createProject(
+    public ResponseEntity<CreatedProjectResponse> createProject(
             @RequestHeader("X-MEMBER-ID") Long writerMemberId,
             @RequestBody CreateProjectRequest request
     ) {
         CreateProjectCommand command = request.toCreateProjectCommand(writerMemberId);
 
-        ProjectSummaryResult result = createProjectUseCase.createProject(command);
+        Long projectId = createProjectUseCase.createProject(command);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ProjectSummaryResponse.from(result));
+                .body(new CreatedProjectResponse(projectId));
 
     }
 
@@ -63,18 +64,18 @@ public class ProjectController {
     }
 
     @PatchMapping("/{projectId}")
-    public ResponseEntity<ProjectSummaryResponse> updateProject(
+    public ResponseEntity<Void> updateProject(
             @RequestHeader("X-MEMBER-ID") Long writerMemberId,
             @PathVariable Long projectId,
             @RequestBody UpdateProjectRequest request
     ) {
         UpdateProjectCommand command = request.toUpdateProjectCommand(projectId, writerMemberId);
 
-        ProjectSummaryResult result = updateProjectUseCase.updateProject(command);
+        updateProjectUseCase.updateProject(command);
 
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ProjectSummaryResponse.from(result));
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
     @GetMapping("/{projectId}")

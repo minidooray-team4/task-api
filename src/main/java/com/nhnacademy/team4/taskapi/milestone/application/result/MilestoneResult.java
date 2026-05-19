@@ -9,7 +9,7 @@ public record MilestoneResult(
         Long id,
         Long projectId,
         String name,
-        Date duDate
+        Date dueDate
 ) {
     public static MilestoneResult from(MileStone mileStone) {
         return new MilestoneResult(mileStone.getId(),mileStone.getProject().getId(),mileStone.getName(),mileStone.getDueDate());

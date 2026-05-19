@@ -6,7 +6,6 @@ import com.nhnacademy.team4.taskapi.project.application.command.AddProjectMember
 import com.nhnacademy.team4.taskapi.project.application.command.CreateProjectCommand;
 import com.nhnacademy.team4.taskapi.project.application.command.UpdateProjectCommand;
 
-import com.nhnacademy.team4.taskapi.project.application.result.ProjectSummaryResult;
 import com.nhnacademy.team4.taskapi.project.application.usecase.AddProjectMemberUseCase;
 import com.nhnacademy.team4.taskapi.project.application.usecase.CreateProjectUseCase;
 import com.nhnacademy.team4.taskapi.project.application.usecase.UpdateProjectUseCase;
@@ -16,7 +15,6 @@ import com.nhnacademy.team4.taskapi.project.domain.ProjectMembers;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectMemberRepository;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +36,7 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
         validateProjectAdmin(project, command.requesterMemberId());
 
         // 멤버 존재유무 판별
-        validateProjectMemberNotExist(project.getId(), command.requesterMemberId());
+        validateProjectMemberNotExist(project.getId(), command.targetMemberId());
 
         ProjectMembers projectMembers = ProjectMembers.create(project, command.targetMemberId());
 
@@ -46,7 +44,7 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
     }
 
     @Override
-    public ProjectSummaryResult createProject(CreateProjectCommand command) {
+    public Long createProject(CreateProjectCommand command) {
 
         Project project = Project.create(
                 command.name(),
@@ -61,12 +59,12 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
 
         projectMemberRepository.save(adminMember);
 
-        return ProjectSummaryResult.from(saved);
+        return saved.getId();
 
     }
 
     @Override
-    public ProjectSummaryResult updateProject(UpdateProjectCommand command) {
+    public void updateProject(UpdateProjectCommand command) {
 
         Project project = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
@@ -75,8 +73,6 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
         validateProjectAdmin(project, command.requesterMemberId());
 
         project.update(command.name(), command.status());
-
-        return ProjectSummaryResult.from(project);
     }
 
     private void validateProjectAdmin(Project project, Long requesterMemberId) {
@@ -85,8 +81,8 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
         }
     }
 
-    private void validateProjectMemberNotExist(Long projectId, Long requesterMemberId) {
-        if (projectMemberRepository.existsByProjectIdAndMemberId(projectId, requesterMemberId)) {
+    private void validateProjectMemberNotExist(Long projectId, Long targetMemberId) {
+        if (projectMemberRepository.existsByProjectIdAndMemberId(projectId, targetMemberId)) {
             throw new BusinessException(ErrorCode.PROJECT_MEMBER_ALREADY_EXISTS);
         }
     }
