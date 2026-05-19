@@ -3,11 +3,12 @@ package com.nhnacademy.team4.taskapi.tags.web;
 import com.nhnacademy.team4.taskapi.tags.application.command.AttachTagToTaskCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.CreateTagCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.DetachTagFromTaskCommand;
+import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
 import com.nhnacademy.team4.taskapi.tags.application.usecase.*;
 import com.nhnacademy.team4.taskapi.tags.web.request.CreateTagRequest;
 import com.nhnacademy.team4.taskapi.tags.web.request.UpdateTagRequest;
 import com.nhnacademy.team4.taskapi.tags.web.response.TagResponse;
-import com.nhnacademy.team4.taskapi.task.application.result.TagResult;
+
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,7 @@
 package com.nhnacademy.team4.taskapi.tags.web.response;
 
-import com.nhnacademy.team4.taskapi.task.application.result.TagResult;
+
+import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
 
 public record TagResponse(
         Long id,

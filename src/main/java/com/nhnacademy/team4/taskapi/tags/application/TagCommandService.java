@@ -9,11 +9,12 @@ import com.nhnacademy.team4.taskapi.tags.application.command.AttachTagToTaskComm
 import com.nhnacademy.team4.taskapi.tags.application.command.CreateTagCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.DetachTagFromTaskCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.UpdateTagCommand;
+import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
 import com.nhnacademy.team4.taskapi.tags.application.usecase.*;
 import com.nhnacademy.team4.taskapi.tags.domain.Tag;
 import com.nhnacademy.team4.taskapi.tags.infrastructure.persistence.TagRepository;
-import com.nhnacademy.team4.taskapi.task.application.result.TagResult;
 import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

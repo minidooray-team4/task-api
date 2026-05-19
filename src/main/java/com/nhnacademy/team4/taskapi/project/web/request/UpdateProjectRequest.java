@@ -5,7 +5,7 @@ import com.nhnacademy.team4.taskapi.project.domain.Status;
 
 public record UpdateProjectRequest(String name, Status status) {
 
-    UpdateProjectCommand toUpdateProjectCommand(Long projectId, Long requesterMemberId) {
+    public UpdateProjectCommand toUpdateProjectCommand(Long projectId, Long requesterMemberId) {
         return new UpdateProjectCommand(projectId,requesterMemberId,name, status);
     }
 }

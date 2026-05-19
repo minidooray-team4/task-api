@@ -18,10 +18,12 @@ import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProjectCommandService implements AddProjectMemberUseCase, CreateProjectUseCase, UpdateProjectUseCase {
 
     private final ProjectRepository projectRepository;
@@ -30,12 +32,12 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
     @Override
     public void addProjectMember(AddProjectMemberCommand command) {
 
-        log.info("ProjectId : {}",command.projectId());
+        log.info("ProjectId : {}", command.projectId());
         Project project = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
         // 관리자 권한 확인
-        if(!project.getAdminMemberId().equals(command.requesterMemberId())){
+        if (!project.getAdminMemberId().equals(command.requesterMemberId())) {
             throw new BusinessException(ErrorCode.FORBIDDEN);
         }
 
@@ -44,7 +46,7 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
                 command.projectId(), command.targetMemberId()
         );
 
-        if(exists) {
+        if (exists) {
             throw new BusinessException(ErrorCode.PROJECT_MEMBER_ALREADY_EXISTS);
         }
 
@@ -75,8 +77,18 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
 
     @Override
     public ProjectSummaryResult updateProject(UpdateProjectCommand command) {
-        //미구현
-        return null;
+
+        Project project = projectRepository.findById(command.projectId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+
+        // 관리자 권한 확인
+        if (!project.getAdminMemberId().equals(command.requesterMemberId())) {
+            throw new BusinessException(ErrorCode.FORBIDDEN);
+        }
+
+        project.update(command.name(), command.status());
+
+        return ProjectSummaryResult.from(project);
     }
 
 
