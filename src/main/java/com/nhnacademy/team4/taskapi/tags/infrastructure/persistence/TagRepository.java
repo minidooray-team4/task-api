@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TagRepository extends JpaRepository<Tag, Long> {
-    List<Tag> findByProjectId(Long projectId);
+public interface TagRepository extends JpaRepository<Tag,Long> {
+    List<Tag> findAllByProjectId(Long projectId);
+    boolean existsByProjectIdAndName(Long projectId,String name);
 }

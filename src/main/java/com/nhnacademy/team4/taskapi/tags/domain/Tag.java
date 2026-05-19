@@ -9,9 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tags")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "tags")
 public class Tag extends BaseTimeEntity {
 
     @Id
@@ -36,5 +36,9 @@ public class Tag extends BaseTimeEntity {
                 .project(project)
                 .name(name)
                 .build();
+    }
+
+    public void rename(String name){
+        this.name=name;
     }
 }
