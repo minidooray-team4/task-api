@@ -55,7 +55,7 @@ public class ProjectQueryService implements GetMyProjectUseCase, GetProjectDetai
 
         // 프로젝트 멤버인지 검증
         validateProjectAccess(projectId, requesterMemberId);
-        
+
         ProjectSummaryResult summary = ProjectSummaryResult.from(project);
 
         List<ProjectMemberResult> members = projectMemberRepository.findByProjectId(projectId)
@@ -64,7 +64,7 @@ public class ProjectQueryService implements GetMyProjectUseCase, GetProjectDetai
         List<TaskSummaryResult> tasks = taskRepository.findByProjectId(projectId)
                 .stream().map(TaskSummaryResult::from).toList();
 
-        List<TagResult> tags = tagRepository.findByProjectId(projectId)
+        List<TagResult> tags = tagRepository.findAllByProjectId(projectId)
                 .stream().map(TagResult::from).toList();
 
         List<MilestoneResult> milestones = milestoneRepository.findByProjectId(projectId)
