@@ -1,6 +1,6 @@
-package com.nhnacademy.team4.taskapi.tag.application.result;
+package com.nhnacademy.team4.taskapi.tags.application.result;
 
-import com.nhnacademy.team4.taskapi.tag.domain.Tag;
+import com.nhnacademy.team4.taskapi.tags.domain.Tag;
 
 public record TagResult (
         Long id,

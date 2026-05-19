@@ -1,4 +1,4 @@
-package com.nhnacademy.team4.taskapi.tag.application.command;
+package com.nhnacademy.team4.taskapi.tags.application.command;
 
 public record UpdateTagCommand (
         Long tagId,

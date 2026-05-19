@@ -17,12 +17,12 @@ Content-Type: application/json
 X-MEMBER-ID: 100
 
 {
-  "name": "sangbaek44"
+  "name": "sangbaek4"
 }
 
 
 ### Tag 삭제 -> task_tags 구현 후 테스트
-DELETE localhost:8080/api/tags/5
+DELETE localhost:8080/api/tags/4
 X-MEMBER-ID: 100
 
 ### Task에 Tag 연결 -> task_tags 구현 후 테스트

@@ -1,18 +1,18 @@
-package com.nhnacademy.team4.taskapi.tag.application;
+package com.nhnacademy.team4.taskapi.tags.application;
 
 
 import com.nhnacademy.team4.taskapi.global.exception.BusinessException;
 import com.nhnacademy.team4.taskapi.global.exception.ErrorCode;
 import com.nhnacademy.team4.taskapi.project.domain.Project;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
-import com.nhnacademy.team4.taskapi.tag.application.command.AttachTagToTaskCommand;
-import com.nhnacademy.team4.taskapi.tag.application.command.CreateTagCommand;
-import com.nhnacademy.team4.taskapi.tag.application.command.DetachTagFromTaskCommand;
-import com.nhnacademy.team4.taskapi.tag.application.command.UpdateTagCommand;
-import com.nhnacademy.team4.taskapi.tag.application.result.TagResult;
-import com.nhnacademy.team4.taskapi.tag.application.usecase.*;
-import com.nhnacademy.team4.taskapi.tag.domain.Tag;
-import com.nhnacademy.team4.taskapi.tag.infrastructure.persistence.TagRepository;
+import com.nhnacademy.team4.taskapi.tags.application.command.AttachTagToTaskCommand;
+import com.nhnacademy.team4.taskapi.tags.application.command.CreateTagCommand;
+import com.nhnacademy.team4.taskapi.tags.application.command.DetachTagFromTaskCommand;
+import com.nhnacademy.team4.taskapi.tags.application.command.UpdateTagCommand;
+import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
+import com.nhnacademy.team4.taskapi.tags.application.usecase.*;
+import com.nhnacademy.team4.taskapi.tags.domain.Tag;
+import com.nhnacademy.team4.taskapi.tags.persistence.TagRepository;
 import com.nhnacademy.team4.taskapi.task.domain.Task;
 import com.nhnacademy.team4.taskapi.task.domain.TaskTag;
 import com.nhnacademy.team4.taskapi.task.infrastructure.TaskRepository;

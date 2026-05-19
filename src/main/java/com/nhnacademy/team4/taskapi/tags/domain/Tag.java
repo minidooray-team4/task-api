@@ -1,4 +1,4 @@
-package com.nhnacademy.team4.taskapi.tag.domain;
+package com.nhnacademy.team4.taskapi.tags.domain;
 
 import com.nhnacademy.team4.taskapi.common.domain.BaseTimeEntity;
 import com.nhnacademy.team4.taskapi.project.domain.Project;

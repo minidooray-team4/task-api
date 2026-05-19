@@ -1,6 +1,6 @@
 package com.nhnacademy.team4.taskapi.task.domain;
 
-import com.nhnacademy.team4.taskapi.tag.domain.Tag;
+import com.nhnacademy.team4.taskapi.tags.domain.Tag;
 import jakarta.persistence.*;
 import lombok.*;
 

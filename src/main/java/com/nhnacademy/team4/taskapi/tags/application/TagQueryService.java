@@ -1,8 +1,8 @@
-package com.nhnacademy.team4.taskapi.tag.application;
+package com.nhnacademy.team4.taskapi.tags.application;
 
-import com.nhnacademy.team4.taskapi.tag.application.result.TagResult;
-import com.nhnacademy.team4.taskapi.tag.application.usecase.GetProjectTagsUseCase;
-import com.nhnacademy.team4.taskapi.tag.infrastructure.persistence.TagRepository;
+import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
+import com.nhnacademy.team4.taskapi.tags.application.usecase.GetProjectTagsUseCase;
+import com.nhnacademy.team4.taskapi.tags.persistence.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

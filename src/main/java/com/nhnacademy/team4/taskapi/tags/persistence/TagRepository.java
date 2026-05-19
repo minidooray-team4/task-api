@@ -1,6 +1,6 @@
-package com.nhnacademy.team4.taskapi.tag.infrastructure.persistence;
+package com.nhnacademy.team4.taskapi.tags.persistence;
 
-import com.nhnacademy.team4.taskapi.tag.domain.Tag;
+import com.nhnacademy.team4.taskapi.tags.domain.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

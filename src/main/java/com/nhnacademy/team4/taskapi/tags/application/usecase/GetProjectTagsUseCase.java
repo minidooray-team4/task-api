@@ -1,6 +1,6 @@
-package com.nhnacademy.team4.taskapi.tag.application.usecase;
+package com.nhnacademy.team4.taskapi.tags.application.usecase;
 
-import com.nhnacademy.team4.taskapi.tag.application.result.TagResult;
+import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
 
 import java.util.List;
 

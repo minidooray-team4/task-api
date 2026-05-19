@@ -1,8 +1,7 @@
 package com.nhnacademy.team4.taskapi.project.domain;
 
-import com.nhnacademy.team4.taskapi.common.domain.BaseCreatedAtEntity;
 import com.nhnacademy.team4.taskapi.common.domain.BaseTimeEntity;
-import com.nhnacademy.team4.taskapi.project.application.command.CreateProjectCommand;
+
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
@@ -46,5 +45,14 @@ public class Project extends BaseTimeEntity {
     @Column(name = "admin_member_id", nullable = false)
     private Long adminMemberId;
 
+    public void update(String name,Status status){
+        if(name != null){
+            this.name = name;
+        }
+
+        if(status != null){
+            this.status = status;
+        }
+    }
 
 }
