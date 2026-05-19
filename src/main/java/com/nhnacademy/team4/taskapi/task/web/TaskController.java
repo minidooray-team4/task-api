@@ -2,12 +2,15 @@ package com.nhnacademy.team4.taskapi.task.web;
 
 
 import com.nhnacademy.team4.taskapi.task.application.command.CreateTaskCommand;
+import com.nhnacademy.team4.taskapi.task.application.command.UpdateTaskCommand;
 import com.nhnacademy.team4.taskapi.task.application.result.TaskDetailResult;
 import com.nhnacademy.team4.taskapi.task.application.result.TaskResult;
 import com.nhnacademy.team4.taskapi.task.application.usecase.CreateTaskUseCase;
 
 import com.nhnacademy.team4.taskapi.task.application.usecase.GetTaskDetailUseCase;
+import com.nhnacademy.team4.taskapi.task.application.usecase.UpdateTaskUseCase;
 import com.nhnacademy.team4.taskapi.task.web.request.CreateTaskRequest;
+import com.nhnacademy.team4.taskapi.task.web.request.UpdateTaskRequest;
 import com.nhnacademy.team4.taskapi.task.web.response.TaskDetailResponse;
 import com.nhnacademy.team4.taskapi.task.web.response.TaskResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,7 @@ public class TaskController {
 
     private final CreateTaskUseCase createTaskUseCase;
     private final GetTaskDetailUseCase getTaskDetailUseCase;
+    private final UpdateTaskUseCase updateTaskUseCase;
 
     @PostMapping("/projects/{projectId}/tasks")
     public ResponseEntity<TaskResponse> addTask(
@@ -49,6 +53,16 @@ public class TaskController {
                 .status(HttpStatus.OK)
                 .body(TaskDetailResponse.from(taskDetail));
 
+    }
+
+    @PatchMapping("/tasks/{taskId}")
+    public void updateTask(
+            @PathVariable Long taskId,
+            @RequestHeader("X-MEMBER-ID") Long writerMemberId,
+            @RequestBody UpdateTaskRequest request
+    ) {
+        UpdateTaskCommand command = request.toUpdateTaskCommand(taskId, writerMemberId);
+        updateTaskUseCase.updateTask(command);
     }
 
 

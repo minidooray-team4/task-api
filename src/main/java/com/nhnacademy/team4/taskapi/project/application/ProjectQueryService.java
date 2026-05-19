@@ -94,7 +94,7 @@ public class ProjectQueryService implements GetMyProjectUseCase, GetProjectDetai
     }
 
     private void validateProjectAccess(Long projectId, Long memberId) {
-        boolean isMember = projectMemberRepository.existsByProject_IdAndMemberId(projectId, memberId);
+        boolean isMember = projectMemberRepository.existsByProjectIdAndMemberId(projectId, memberId);
 
         if (!isMember) {
             throw new BusinessException(ErrorCode.FORBIDDEN);

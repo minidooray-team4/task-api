@@ -42,7 +42,7 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
         }
 
         // 멤버 존재유무 판별
-        boolean exists = projectMemberRepositroy.existsByProject_IdAndMemberId(
+        boolean exists = projectMemberRepositroy.existsByProjectIdAndMemberId(
                 command.projectId(), command.targetMemberId()
         );
 

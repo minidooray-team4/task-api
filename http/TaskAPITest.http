@@ -11,4 +11,12 @@ X-MEMBER-ID: 100
 
 
 ### Task 수정 API
+PATCH http://localhost:8080/api/tasks/2
+Content-Type: application/json
+X-MEMBER-ID: 100
+
+{
+  "title": "API 명세 작성2",
+  "content": "Task 생성 API 구현2"
+}
 
