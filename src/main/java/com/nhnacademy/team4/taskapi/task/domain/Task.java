@@ -78,6 +78,6 @@ public class Task extends BaseTimeEntity {
     }
 
     public Long getMilestoneId() {
-        return milestone.getId();
+        return milestone == null ? null : milestone.getId();
     }
 }
