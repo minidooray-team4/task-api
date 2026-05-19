@@ -11,7 +11,7 @@ X-MEMBER-ID: 100
 
 
 ### Task 수정 API
-PATCH http://localhost:8080/api/tasks/2
+PATCH http://localhost:8080/api/tasks/3
 Content-Type: application/json
 X-MEMBER-ID: 100
 

@@ -4,7 +4,9 @@ package com.nhnacademy.team4.taskapi.task.application;
 import com.nhnacademy.team4.taskapi.comment.application.result.CommentResult;
 import com.nhnacademy.team4.taskapi.global.exception.BusinessException;
 
+import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
 import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
+import com.nhnacademy.team4.taskapi.tags.persistence.TagRepository;
 import com.nhnacademy.team4.taskapi.task.application.command.GetProjectTasksQuery;
 
 import com.nhnacademy.team4.taskapi.task.application.result.TaskDetailResult;
@@ -28,6 +30,7 @@ import static com.nhnacademy.team4.taskapi.global.exception.ErrorCode.TASK_NOT_F
 public class TaskQueryService implements GetProjectTasksUseCase, GetTaskDetailUseCase {
 
     private final TaskRepository taskRepository;
+    private final TagRepository tagRepository;
 
     @Override
     public List<TaskSummaryResult> getProjectTasks(GetProjectTasksQuery query) {
