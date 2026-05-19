@@ -1,5 +1,5 @@
 ### Tag 생성
-POST localhost:8080/api/projects/1/tags
+POST localhost:8080/api/projects/2/tags
 Content-Type: application/json
 X-MEMBER-ID: 100
 
@@ -12,7 +12,7 @@ GET localhost:8080/api/projects/1/tags
 X-MEMBER-ID: 100
 
 ### Tag 수정
-PATCH localhost:8080/api/tags/2
+PATCH localhost:8080/api/tags/1
 Content-Type: application/json
 X-MEMBER-ID: 100
 
@@ -22,15 +22,15 @@ X-MEMBER-ID: 100
 
 
 ### Tag 삭제 -> task_tags 구현 후 테스트
-DELETE localhost:8080/api/tags/4
+DELETE localhost:8080/api/tags/1
 X-MEMBER-ID: 100
 
 ### Task에 Tag 연결 -> task_tags 구현 후 테스트
-PUT localhost:8080/api/tasks/1/tags/2
+PUT localhost:8080/api/tasks/1/tags/1
 X-MEMBER-ID: 100
 
 ### Task에서 Tag 제거 -> task_tags 구현 후 테스트
-DELETE localhost:8080/api/tasks/1/tags/2
+DELETE localhost:8080/api/tasks/1/tags/1
 X-MEMBER-ID: 100
 
 ###

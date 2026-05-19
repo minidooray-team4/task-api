@@ -2,6 +2,9 @@ package com.nhnacademy.team4.taskapi.task.application;
 
 import com.nhnacademy.team4.taskapi.global.exception.BusinessException;
 
+import com.nhnacademy.team4.taskapi.global.exception.ErrorCode;
+import com.nhnacademy.team4.taskapi.milestone.domain.MileStone;
+import com.nhnacademy.team4.taskapi.milestone.infrastructure.MilestoneRepository;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
 import com.nhnacademy.team4.taskapi.project.domain.Project;
 import com.nhnacademy.team4.taskapi.task.application.command.*;
@@ -21,6 +24,7 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
+    private final MilestoneRepository milestoneRepository;
 
     @Override
     public TaskResult assignMilestoneToTask(AssignMilestoneToTaskCommand command) {
@@ -34,7 +38,19 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
         Project project = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new BusinessException(PROJECT_NOT_FOUND));
 
-        Task newTask = Task.create(command.title(), command.content(), command.milestoneId(), project, command.requesterMemberId());
+        MileStone milestone = null;
+        if (command.milestoneId() != null) {
+            milestone = milestoneRepository.findById(command.milestoneId())
+                    .orElseThrow(() -> new BusinessException(ErrorCode.MILESTONE_NOT_FOUND));
+        }
+
+        Task newTask = Task.create(
+                command.title(),
+                command.content(),
+                milestone,
+                project,
+                command.requesterMemberId()
+        );
 
 
         Task savedTask = taskRepository.save(newTask);

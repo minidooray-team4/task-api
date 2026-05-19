@@ -8,7 +8,7 @@ X-MEMBER-ID: 100
 }
 
 ### Project 멤버 추가 API
-PUT http://localhost:8080/api/projects/1/members/5
+PUT http://localhost:8080/api/projects/1/members/2
 Content-Type: application/json
 X-MEMBER-ID: 100
 
