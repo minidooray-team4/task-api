@@ -23,7 +23,7 @@ import static com.nhnacademy.team4.taskapi.global.exception.ErrorCode.PROJECT_NO
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateTaskUseCase, RemoveMilestoneFromTaskUseCase, UpdateTaskUseCase,DeleteTaskUseCase{
+public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateTaskUseCase, RemoveMilestoneFromTaskUseCase, UpdateTaskUseCase, DeleteTaskUseCase {
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
@@ -37,7 +37,7 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
     }
 
     @Override
-    public TaskResult createTask(CreateTaskCommand command) {
+    public void createTask(CreateTaskCommand command) {
 
         Project project = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new BusinessException(PROJECT_NOT_FOUND));
@@ -65,10 +65,8 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
                 command.requesterMemberId()
         );
 
+        taskRepository.save(newTask);
 
-        Task savedTask = taskRepository.save(newTask);
-
-        return TaskResult.from(savedTask);
     }
 
 
@@ -79,7 +77,7 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
                 .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND));
 
         // 프로젝트 멤버 검증
-        validateProjectMember(task.getProjectId(),  command.requesterMemberId());
+        validateProjectMember(task.getProjectId(), command.requesterMemberId());
 
         task.update(command.title(), command.content());
 
@@ -98,15 +96,15 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
                 .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND));
 
         // 프로젝트 멤버 검증
-        validateProjectMember(task.getProjectId(),  requesterMemberId);
+        validateProjectMember(task.getProjectId(), requesterMemberId);
 
         taskRepository.deleteById(taskId);
     }
 
-    private void validateProjectMember(Long projectId, Long memberId){
+    private void validateProjectMember(Long projectId, Long memberId) {
         boolean isMember = projectMemberRepository
                 .existsByProjectIdAndMemberId(projectId, memberId);
-        if(!isMember){
+        if (!isMember) {
             throw new BusinessException(ErrorCode.FORBIDDEN);
         }
     }
