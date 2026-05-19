@@ -28,7 +28,7 @@ Content-Type:  application/json
 X-MEMBER-ID: 100
 
 ### 프로젝트 상세 정보 조회
-GET http://localhost:8080/api/projects/1
+GET http://localhost:8080/api/projects/2
 Content-Type: application/json
 X-MEMBER-ID: 100
 

@@ -7,6 +7,7 @@ import com.nhnacademy.team4.taskapi.task.application.result.TaskDetailResult;
 import com.nhnacademy.team4.taskapi.task.application.result.TaskResult;
 import com.nhnacademy.team4.taskapi.task.application.usecase.CreateTaskUseCase;
 
+import com.nhnacademy.team4.taskapi.task.application.usecase.DeleteTaskUseCase;
 import com.nhnacademy.team4.taskapi.task.application.usecase.GetTaskDetailUseCase;
 import com.nhnacademy.team4.taskapi.task.application.usecase.UpdateTaskUseCase;
 import com.nhnacademy.team4.taskapi.task.web.request.CreateTaskRequest;
@@ -27,6 +28,7 @@ public class TaskController {
     private final CreateTaskUseCase createTaskUseCase;
     private final GetTaskDetailUseCase getTaskDetailUseCase;
     private final UpdateTaskUseCase updateTaskUseCase;
+    private final DeleteTaskUseCase deleteTaskUseCase;
 
     @PostMapping("/projects/{projectId}/tasks")
     public ResponseEntity<TaskResponse> addTask(
@@ -64,6 +66,15 @@ public class TaskController {
         UpdateTaskCommand command = request.toUpdateTaskCommand(taskId, writerMemberId);
         updateTaskUseCase.updateTask(command);
     }
+
+    @DeleteMapping("/tasks/{taskId}")
+    public void deleteTask(
+            @PathVariable Long taskId,
+            @RequestHeader("X-MEMBER-ID") Long writerMemberId
+    ) {
+        deleteTaskUseCase.deleteTask(taskId, writerMemberId);
+    }
+
 
 
 }

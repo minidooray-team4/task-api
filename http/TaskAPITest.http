@@ -20,3 +20,9 @@ X-MEMBER-ID: 100
   "content": "Task 생성 API 구현2"
 }
 
+### Task 삭제 API
+DELETE http://localhost:8080/api/tasks/3
+Content-Type: application/json
+X-MEMBER-ID: 300
+
+

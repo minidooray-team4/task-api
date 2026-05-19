@@ -61,7 +61,7 @@ public class ProjectQueryService implements GetMyProjectUseCase, GetProjectDetai
         List<ProjectMemberResult> members = projectMemberRepository.findByProjectId(projectId)
                 .stream().map(ProjectMemberResult::from).toList();
 
-        List<TaskSummaryResult> tasks = taskRepository.findByProjectId(projectId)
+        List<TaskSummaryResult> tasks = taskRepository.findByProject_Id(projectId)
                 .stream().map(TaskSummaryResult::from).toList();
 
         List<TagResult> tags = tagRepository.findAllByProjectId(projectId)

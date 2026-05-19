@@ -88,13 +88,19 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
 
     @Override
     public TaskResult removeMilestoneFromTask(Long taskId, Long requesterMemberId) {
-        //미구현
+
         return null;
     }
 
     @Override
     public void deleteTask(Long taskId, Long requesterMemberId) {
-        //미구현
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND));
+
+        // 프로젝트 멤버 검증
+        validateProjectMember(task.getProjectId(),  requesterMemberId);
+
+        taskRepository.deleteById(taskId);
     }
 
     private void validateProjectMember(Long projectId, Long memberId){
