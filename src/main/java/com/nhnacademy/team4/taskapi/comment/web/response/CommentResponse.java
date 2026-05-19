@@ -1,6 +1,6 @@
 package com.nhnacademy.team4.taskapi.comment.web.response;
 
-
+import com.nhnacademy.team4.taskapi.comment.application.result.CommentResult;
 
 public record CommentResponse(
         Long id,
@@ -8,12 +8,12 @@ public record CommentResponse(
         Long writerMemberId,
         String content
 ) {
-    public static CommentResponse from(CommentResponse commentResponse) {
+    public static CommentResponse from(CommentResult result) {
         return new CommentResponse(
-                commentResponse.id,
-                commentResponse.taskId,
-                commentResponse.writerMemberId,
-                commentResponse.content
+                result.id(),
+                result.taskId(),
+                result.writerMemberId(),
+                result.content()
         );
     }
 }
