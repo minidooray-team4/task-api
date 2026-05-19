@@ -1,7 +1,8 @@
 package com.nhnacademy.team4.taskapi.task.web.response;
 
 import com.nhnacademy.team4.taskapi.comment.application.result.CommentResult;
-import com.nhnacademy.team4.taskapi.task.application.result.TagResult;
+
+import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
 import com.nhnacademy.team4.taskapi.task.application.result.TaskDetailResult;
 
 import java.util.List;

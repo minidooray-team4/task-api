@@ -19,4 +19,7 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMembers, L
                 where pm.memberId = :memberId
             """)
     List<ProjectMembers> findByMemberId(Long memberId);
+
+    List<ProjectMembers> findByProjectId(Long projectId);
+
 }

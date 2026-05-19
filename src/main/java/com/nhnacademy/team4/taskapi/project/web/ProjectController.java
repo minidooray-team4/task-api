@@ -4,13 +4,12 @@ package com.nhnacademy.team4.taskapi.project.web;
 import com.nhnacademy.team4.taskapi.project.application.command.AddProjectMemberCommand;
 import com.nhnacademy.team4.taskapi.project.application.command.CreateProjectCommand;
 import com.nhnacademy.team4.taskapi.project.application.command.UpdateProjectCommand;
+import com.nhnacademy.team4.taskapi.project.application.result.ProjectDetailResult;
 import com.nhnacademy.team4.taskapi.project.application.result.ProjectSummaryResult;
-import com.nhnacademy.team4.taskapi.project.application.usecase.AddProjectMemberUseCase;
-import com.nhnacademy.team4.taskapi.project.application.usecase.CreateProjectUseCase;
-import com.nhnacademy.team4.taskapi.project.application.usecase.GetMyProjectUseCase;
-import com.nhnacademy.team4.taskapi.project.application.usecase.UpdateProjectUseCase;
+import com.nhnacademy.team4.taskapi.project.application.usecase.*;
 import com.nhnacademy.team4.taskapi.project.web.request.CreateProjectRequest;
 import com.nhnacademy.team4.taskapi.project.web.request.UpdateProjectRequest;
+import com.nhnacademy.team4.taskapi.project.web.response.ProjectDetailResponse;
 import com.nhnacademy.team4.taskapi.project.web.response.ProjectSummaryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +26,7 @@ public class ProjectController {
     private final AddProjectMemberUseCase addProjectMemberUseCase;
     private final UpdateProjectUseCase updateProjectUseCase;
     private final GetMyProjectUseCase getMyProjectUseCase;
+    private final GetProjectDetailUseCase getProjectDetailUseCase;
 
     @PostMapping
     public ResponseEntity<ProjectSummaryResponse> createProject(
@@ -69,6 +69,18 @@ public class ProjectController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ProjectSummaryResponse.from(result));
+    }
+
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ProjectDetailResponse> getProjectDetail(
+            @RequestHeader("X-MEMBER-ID") Long writerMemberId,
+            @PathVariable Long projectId
+    ){
+        ProjectDetailResult result = getProjectDetailUseCase.getProjectDetail(projectId,writerMemberId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ProjectDetailResponse.from(result));
     }
 
     @GetMapping
