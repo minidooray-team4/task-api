@@ -52,7 +52,7 @@ public class TagTest {
     void UpdateTag204() throws Exception {
         UpdateTagRequest request=new UpdateTagRequest("testTag2");
 
-        mockMvc.perform(patch("/api/tags/7")
+        mockMvc.perform(patch("/api/tags/12")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("X-MEMBER-ID",100)
                 .content(objectMapper.writeValueAsString(request)))
@@ -62,7 +62,7 @@ public class TagTest {
     @Test
     @DisplayName("태그 삭제 -> 204")
     void DeleteTag204() throws Exception {
-        mockMvc.perform(delete("/api/tags/7")
+        mockMvc.perform(delete("/api/tags/12")
                 .header("X-MEMBER-ID",100))
                 .andExpect(status().isNoContent());
     }
@@ -70,7 +70,7 @@ public class TagTest {
     @Test
     @DisplayName("Task에 Tag 연결 -> 204")
     void TaskToTagConnect204() throws Exception {
-        mockMvc.perform(put("/api/tasks/1/tags/7")
+        mockMvc.perform(put("/api/tasks/1/tags/12")
                 .header("X-MEMBER-ID",100))
                 .andExpect(status().isNoContent());
     }
@@ -78,7 +78,7 @@ public class TagTest {
     @Test
     @DisplayName("Task에서 Tag 제거 -> 204")
     void InTeskDeleteTag204() throws Exception {
-        mockMvc.perform(delete("/api/tasks/1/tags/7")
+        mockMvc.perform(delete("/api/tasks/1/tags/12")
                 .header("X-MEMBER-ID",100))
                 .andExpect(status().isNoContent());
     }
