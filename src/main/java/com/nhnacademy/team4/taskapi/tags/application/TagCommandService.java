@@ -35,30 +35,30 @@ public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, De
 
     @Override
     public TagResult createTag(CreateTagCommand command) {
-        Project project=projectRepository.findById(command.projectId())
-                .orElseThrow(()->new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+        Project project = projectRepository.findById(command.projectId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if(tagRepository.existsByProjectIdAndName(command.projectId(),command.name())){
+        if (tagRepository.existsByProjectIdAndName(command.projectId(), command.name())) {
             throw new BusinessException(ErrorCode.TAG_ALREADY_EXISTS);
         }
 
-        Tag tag=Tag.create(project,command.name());
-        Tag savedTag=tagRepository.save(tag);
+        Tag tag = Tag.create(project, command.name());
+        Tag savedTag = tagRepository.save(tag);
         return TagResult.from(savedTag);
     }
 
     @Override
     public void deleteTag(Long tagId, Long requesterMemberId) {
-        Tag tag=tagRepository.findById(tagId)
-                .orElseThrow(()->new RuntimeException("Tag not found"));
+        Tag tag = tagRepository.findById(tagId)
+                .orElseThrow(() -> new RuntimeException("Tag not found"));
 
         tagRepository.delete(tag);
     }
 
     @Override
     public TagResult updateTag(UpdateTagCommand command) {
-        Tag tag=tagRepository.findById(command.tagId())
-                .orElseThrow(()->new RuntimeException(("Tag not found")));
+        Tag tag = tagRepository.findById(command.tagId())
+                .orElseThrow(() -> new RuntimeException(("Tag not found")));
 
         tag.rename(command.name());
         return TagResult.from(tag);
@@ -67,25 +67,26 @@ public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, De
     @Override
     public void attachTagToTask(AttachTagToTaskCommand command) {
         //TODO task_tags 구현 후
-        Task task=taskRepository.findById(command.taskId())
-                .orElseThrow(()->new BusinessException(ErrorCode.TASK_NOT_FOUND));
+        Task task = taskRepository.findById(command.taskId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND));
 
-        Tag tag=tagRepository.findById(command.tagId())
-                .orElseThrow(()->new BusinessException(ErrorCode.TAG_NOT_FOUND));
+        Tag tag = tagRepository.findById(command.tagId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.TAG_NOT_FOUND));
 
-        if(!task.getProject().getId().equals(tag.getProject().getId())){
+        if (!task.getProject().getId().equals(tag.getProject().getId())) {
             throw new BusinessException(ErrorCode.FORBIDDEN);
         }
 
-        TaskTag taskTag=TaskTag.create(task,tag,task.getProject().getId());
+        TaskTag taskTag = TaskTag.create(task, tag, task.getProject().getId());
         taskTagRepository.save(taskTag);
 
-        }
+    }
 
     @Override
     public void detachTagFromTask(DetachTagFromTaskCommand command) {
         //TODO task_tags 구현 후
-        taskTagRepository.deleteByTaskIdAndTagId(command.taskId(),command.tagId());
+        Tag tag = tagRepository.findById(command.tagId()).orElseThrow(() -> new BusinessException(ErrorCode.TAG_NOT_FOUND));
+        taskTagRepository.deleteByTaskIdAndTagId(command.taskId(), command.tagId());
     }
 
 }

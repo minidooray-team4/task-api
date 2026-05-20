@@ -1,15 +1,12 @@
 package com.nhnacademy.team4.taskapi.task.web;
 
 
+import com.nhnacademy.team4.taskapi.task.application.TaskCommandService;
+import com.nhnacademy.team4.taskapi.task.application.TaskQueryService;
 import com.nhnacademy.team4.taskapi.task.application.command.CreateTaskCommand;
 import com.nhnacademy.team4.taskapi.task.application.command.UpdateTaskCommand;
 import com.nhnacademy.team4.taskapi.task.application.result.TaskDetailResult;
 
-import com.nhnacademy.team4.taskapi.task.application.usecase.CreateTaskUseCase;
-
-import com.nhnacademy.team4.taskapi.task.application.usecase.DeleteTaskUseCase;
-import com.nhnacademy.team4.taskapi.task.application.usecase.GetTaskDetailUseCase;
-import com.nhnacademy.team4.taskapi.task.application.usecase.UpdateTaskUseCase;
 import com.nhnacademy.team4.taskapi.task.web.request.CreateTaskRequest;
 import com.nhnacademy.team4.taskapi.task.web.request.UpdateTaskRequest;
 import com.nhnacademy.team4.taskapi.task.web.response.TaskDetailResponse;
@@ -25,10 +22,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class TaskController {
 
-    private final CreateTaskUseCase createTaskUseCase;
-    private final GetTaskDetailUseCase getTaskDetailUseCase;
-    private final UpdateTaskUseCase updateTaskUseCase;
-    private final DeleteTaskUseCase deleteTaskUseCase;
+    private final TaskCommandService taskCommandService;
+    private final TaskQueryService taskQueryService;
 
     @PostMapping("/projects/{projectId}/tasks")
     public ResponseEntity<Void> addTask(
@@ -38,7 +33,7 @@ public class TaskController {
     ) {
         CreateTaskCommand command = request.toCreateTaskCommand(projectId, writerMemberId);
 
-        createTaskUseCase.createTask(command);
+        taskCommandService.createTask(command);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -48,7 +43,7 @@ public class TaskController {
             @PathVariable Long taskId
 
     ) {
-        TaskDetailResult taskDetail = getTaskDetailUseCase.getTaskDetail(taskId);
+        TaskDetailResult taskDetail = taskQueryService.getTaskDetail(taskId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(TaskDetailResponse.from(taskDetail));
@@ -62,7 +57,7 @@ public class TaskController {
             @RequestBody UpdateTaskRequest request
     ) {
         UpdateTaskCommand command = request.toUpdateTaskCommand(taskId, writerMemberId);
-        updateTaskUseCase.updateTask(command);
+        taskCommandService.updateTask(command);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
@@ -73,7 +68,7 @@ public class TaskController {
             @PathVariable Long taskId,
             @RequestHeader("X-MEMBER-ID") Long writerMemberId
     ) {
-        deleteTaskUseCase.deleteTask(taskId, writerMemberId);
+        taskCommandService.deleteTask(taskId, writerMemberId);
     }
 
 

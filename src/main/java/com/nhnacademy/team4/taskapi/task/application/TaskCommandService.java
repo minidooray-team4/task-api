@@ -23,20 +23,20 @@ import static com.nhnacademy.team4.taskapi.global.exception.ErrorCode.PROJECT_NO
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateTaskUseCase, RemoveMilestoneFromTaskUseCase, UpdateTaskUseCase, DeleteTaskUseCase {
+public class TaskCommandService {
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final MilestoneRepository milestoneRepository;
     private final ProjectMemberRepository projectMemberRepository;
 
-    @Override
+
     public TaskResult assignMilestoneToTask(AssignMilestoneToTaskCommand command) {
         //미구현
         return null;
     }
 
-    @Override
+
     public void createTask(CreateTaskCommand command) {
 
         Project project = projectRepository.findById(command.projectId())
@@ -69,8 +69,6 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
 
     }
 
-
-    @Override
     public void updateTask(UpdateTaskCommand command) {
 
         Task task = taskRepository.findById(command.taskId())
@@ -84,13 +82,13 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
 
     }
 
-    @Override
+
     public TaskResult removeMilestoneFromTask(Long taskId, Long requesterMemberId) {
 
         return null;
     }
 
-    @Override
+
     public void deleteTask(Long taskId, Long requesterMemberId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND));
