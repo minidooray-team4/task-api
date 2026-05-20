@@ -1,0 +1,29 @@
+### 마일스톤 생성
+POST http://localhost:8080/api/projects/2/milestones
+Content-Type: application/json
+X-MEMBER-ID: 100
+
+{
+  "name": "프론트엔드3",
+  "dueDate": "2026-05-20"
+}
+
+### 마일스톤 수정
+PATCH http://localhost:8080/api/milestones/1
+Content-Type: application/json
+X-MEMBER-ID: 100
+
+{
+    "name": "백엔드",
+    "dueDate": "2027-02-01"
+}
+
+### 마일스톤 삭제
+DELETE http://localhost:8080/api/milestones/1
+Content-Type: application/json
+X-MEMBER-ID: 100
+
+### 마일스톤 조회
+GET http://localhost:8080/api/projects/2/milestones
+Content-Type: application/json
+X-MEMBER-ID: 100

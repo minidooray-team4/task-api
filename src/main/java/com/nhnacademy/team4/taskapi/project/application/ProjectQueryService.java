@@ -67,7 +67,7 @@ public class ProjectQueryService implements GetMyProjectUseCase, GetProjectDetai
         List<TagResult> tags = tagRepository.findAllByProjectId(projectId)
                 .stream().map(TagResult::from).toList();
 
-        List<MilestoneResult> milestones = milestoneRepository.findByProjectId(projectId)
+        List<MilestoneResult> milestones = milestoneRepository.findByProject_Id(projectId)
                 .stream().map(MilestoneResult::from).toList();
 
         return new ProjectDetailResult(

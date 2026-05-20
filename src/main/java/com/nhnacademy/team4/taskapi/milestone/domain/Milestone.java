@@ -4,10 +4,11 @@ import com.nhnacademy.team4.taskapi.common.domain.BaseTimeEntity;
 import com.nhnacademy.team4.taskapi.project.domain.Project;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(
@@ -21,7 +22,7 @@ import java.sql.Date;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MileStone extends BaseTimeEntity {
+public class Milestone extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +36,37 @@ public class MileStone extends BaseTimeEntity {
     private String name;
 
     @Column(name = "due_date")
-    private Date dueDate;
+    private LocalDate dueDate;
+
+    @Builder
+    private Milestone(Long id, Project project, String name, LocalDate dueDate) {
+        this.id = id;
+        this.project = project;
+        this.name = name;
+        this.dueDate = dueDate;
+
+    }
+
+    public static Milestone create(Project project, String name, LocalDate dueDate) {
+        return Milestone.builder()
+                .project(project)
+                .name(name)
+                .dueDate(dueDate)
+                .build();
+    }
+
+    public Long getProjectId() {
+        return project.getId();
+    }
+
+    public void update(String name, LocalDate dueDate) {
+        if (name != null) {
+            this.name = name;
+        }
+
+        if (dueDate != null) {
+            this.dueDate = dueDate;
+        }
+
+    }
 }

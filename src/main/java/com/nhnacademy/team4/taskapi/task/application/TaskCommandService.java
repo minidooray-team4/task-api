@@ -3,7 +3,7 @@ package com.nhnacademy.team4.taskapi.task.application;
 import com.nhnacademy.team4.taskapi.global.exception.BusinessException;
 
 import com.nhnacademy.team4.taskapi.global.exception.ErrorCode;
-import com.nhnacademy.team4.taskapi.milestone.domain.MileStone;
+import com.nhnacademy.team4.taskapi.milestone.domain.Milestone;
 import com.nhnacademy.team4.taskapi.milestone.infrastructure.MilestoneRepository;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectMemberRepository;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
@@ -45,7 +45,7 @@ public class TaskCommandService implements AssignMilestoneToTaskUseCase, CreateT
         // 프로젝트 멤버 검증
         validateProjectMember(command.projectId(), command.requesterMemberId());
 
-        MileStone milestone = null;
+        Milestone milestone = null;
 
         // 마일스톤이 프로젝트내 존재하는지 검증
         if (command.milestoneId() != null) {

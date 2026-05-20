@@ -1,7 +1,7 @@
 package com.nhnacademy.team4.taskapi.task.domain;
 
 import com.nhnacademy.team4.taskapi.common.domain.BaseTimeEntity;
-import com.nhnacademy.team4.taskapi.milestone.domain.MileStone;
+import com.nhnacademy.team4.taskapi.milestone.domain.Milestone;
 import com.nhnacademy.team4.taskapi.project.domain.Project;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -40,7 +40,7 @@ public class Task extends BaseTimeEntity {
                     updatable = false
             )
     })
-    private MileStone milestone;
+    private Milestone milestone;
 
 
     @Column(nullable = false, length = 200)
@@ -56,7 +56,7 @@ public class Task extends BaseTimeEntity {
     private Task(
             String title,
             String content,
-            MileStone milestone,
+            Milestone milestone,
             Project project,
             Long writerMemberId
     ) {
@@ -67,7 +67,7 @@ public class Task extends BaseTimeEntity {
         this.writerMemberId = writerMemberId;
     }
 
-    public static Task create(String title, String content, MileStone milestone, Project project, Long writerMemberId) {
+    public static Task create(String title, String content, Milestone milestone, Project project, Long writerMemberId) {
         return Task.builder()
                 .title(title)
                 .content(content)

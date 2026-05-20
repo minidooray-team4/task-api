@@ -56,10 +56,9 @@
 
 ## Milestone
 
-- [ ] Milestone 생성 API를 구현한다.
-- [ ] Milestone 목록 조회 API를 구현한다.
-- [ ] Milestone 수정 API를 구현한다.
-- [ ] Milestone 삭제 API를 구현한다.
-- [ ] 같은 프로젝트 내 Milestone 이름 중복을 방지한다.
-- [ ] Milestone 삭제 시 연결된 Task 처리 정책을 확정한다.
-
+- [X] Milestone 생성 API를 구현한다.
+- [X] Milestone 목록 조회 API를 구현한다.
+- [X] Milestone 수정 API를 구현한다.
+- [X] Milestone 삭제 API를 구현한다.
+- [X] 같은 프로젝트 내 Milestone 이름 중복을 방지한다.
+- [X] Milestone 삭제 시 연결된 Task 처리 정책을 확정한다.
