@@ -15,7 +15,7 @@ public record TaskDetailResponse(
         String title,
         String content,
         Long writerMemberId,
-        MilestoneResponse milestoneResponse,
+        MilestoneResponse milestone,
         List<TagResponse> tags,
         List<CommentResponse> comments
 
