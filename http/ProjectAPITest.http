@@ -28,13 +28,13 @@ Content-Type:  application/json
 X-MEMBER-ID: 100
 
 ### 프로젝트 상세 정보 조회
-GET http://localhost:8080/api/projects/2
+GET http://localhost:8080/api/projects/1
 Content-Type: application/json
 X-MEMBER-ID: 100
 
 
 ### 프로젝트의 멤버 조회
-GET http://localhost:8080/api/projects/2/members
+GET http://localhost:8080/api/projects/1/members
 Content-Type: application/json
 X-MEMBER-ID: 100
 

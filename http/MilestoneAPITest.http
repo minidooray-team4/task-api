@@ -1,5 +1,5 @@
 ### 마일스톤 생성
-POST http://localhost:8080/api/projects/2/milestones
+POST http://localhost:8080/api/projects/1/milestones
 Content-Type: application/json
 X-MEMBER-ID: 100
 
@@ -24,6 +24,6 @@ Content-Type: application/json
 X-MEMBER-ID: 100
 
 ### 마일스톤 조회
-GET http://localhost:8080/api/projects/2/milestones
+GET http://localhost:8080/api/projects/1/milestones
 Content-Type: application/json
 X-MEMBER-ID: 100

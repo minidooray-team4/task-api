@@ -61,20 +61,15 @@ public class TaskCommandService {
         Project project = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new BusinessException(PROJECT_NOT_FOUND));
 
-
-        Milestone milestone = null;
-
-        // 마일스톤이 프로젝트내 존재하는지 검증
-        milestone = milestoneRepository
-                .findById(command.milestoneId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.MILESTONE_NOT_FOUND));
-
         // 프로젝트 멤버 검증
         validateProjectMember(
                 command.projectId(),
                 command.requesterMemberId()
         );
 
+        Milestone milestone = null;
+
+        // 마일스톤이 프로젝트 내 존재하는지 검증
         if (command.milestoneId() != null) {
             milestone = milestoneRepository
                     .findByProject_IdAndId(
@@ -85,61 +80,59 @@ public class TaskCommandService {
                             new BusinessException(INVALID_MILESTONE_PROJECT));
         }
 
-    Task newTask = Task.create(
-            command.title(),
-            command.content(),
-            milestone,
-            project,
-            command.requesterMemberId()
-    );
-
+        Task newTask = Task.create(
+                command.title(),
+                command.content(),
+                milestone,
+                project,
+                command.requesterMemberId()
+        );
 
         taskRepository.save(newTask);
-
-}
-
-public void updateTask(UpdateTaskCommand command) {
-
-    Task task = taskRepository.findById(command.taskId())
-            .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND));
-
-    // 프로젝트 멤버 검증
-    validateProjectMember(task.getProjectId(), command.requesterMemberId());
-
-    task.update(command.title(), command.content());
-
-
-}
-
-
-public void detachMilestoneFromTask(Long taskId, Long requesterMemberId) {
-
-    Task task = taskRepository.findById(taskId)
-            .orElseThrow(() -> new BusinessException(TASK_NOT_FOUND));
-
-    // 프로젝트에 존재하는 학생인지 검증
-    validateProjectMember(task.getProjectId(), requesterMemberId);
-
-    task.detachMilestone();
-
-}
-
-
-public void deleteTask(Long taskId, Long requesterMemberId) {
-    Task task = taskRepository.findById(taskId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND));
-
-    // 프로젝트 멤버 검증
-    validateProjectMember(task.getProjectId(), requesterMemberId);
-
-    taskRepository.deleteById(taskId);
-}
-
-private void validateProjectMember(Long projectId, Long memberId) {
-    boolean isMember = projectMemberRepository
-            .existsByProjectIdAndMemberId(projectId, memberId);
-    if (!isMember) {
-        throw new BusinessException(ErrorCode.FORBIDDEN);
     }
-}
+
+    public void updateTask(UpdateTaskCommand command) {
+
+        Task task = taskRepository.findById(command.taskId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND));
+
+        // 프로젝트 멤버 검증
+        validateProjectMember(task.getProjectId(), command.requesterMemberId());
+
+        task.update(command.title(), command.content());
+
+
+    }
+
+
+    public void detachMilestoneFromTask(Long taskId, Long requesterMemberId) {
+
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new BusinessException(TASK_NOT_FOUND));
+
+        // 프로젝트에 존재하는 학생인지 검증
+        validateProjectMember(task.getProjectId(), requesterMemberId);
+
+        task.detachMilestone();
+
+    }
+
+
+    public void deleteTask(Long taskId, Long requesterMemberId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND));
+
+        // 프로젝트 멤버 검증
+        validateProjectMember(task.getProjectId(), requesterMemberId);
+
+        taskRepository.deleteById(taskId);
+    }
+
+    private void validateProjectMember(Long projectId, Long memberId) {
+        boolean isMember = projectMemberRepository
+                .existsByProjectIdAndMemberId(projectId, memberId);
+        if (!isMember) {
+            throw new BusinessException(ErrorCode.FORBIDDEN);
+        }
+    }
 }

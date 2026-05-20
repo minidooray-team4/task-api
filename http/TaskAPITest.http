@@ -1,5 +1,5 @@
 ### Task 생성 API
-POST localhost:8080/api/projects/2/tasks
+POST localhost:8080/api/projects/1/tasks
 Content-Type: application/json
 X-MEMBER-ID: 100
 
@@ -22,6 +22,17 @@ X-MEMBER-ID: 100
 
 ### Task 삭제 API
 DELETE http://localhost:8080/api/tasks/3
+Content-Type: application/json
+X-MEMBER-ID: 100
+
+
+### Task에 마일스톤 추가 API
+PUT http://localhost:8080/api/tasks/1/milestone/1
+Content-Type: application/json
+X-MEMBER-ID: 100
+
+### Task에 마일스톤 삭제 API
+DELETE http://localhost:8080/api/tasks/1/milestone
 Content-Type: application/json
 X-MEMBER-ID: 100
 
