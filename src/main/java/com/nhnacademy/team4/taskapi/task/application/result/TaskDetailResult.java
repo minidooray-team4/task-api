@@ -1,6 +1,8 @@
 package com.nhnacademy.team4.taskapi.task.application.result;
 
 import com.nhnacademy.team4.taskapi.comment.application.result.CommentResult;
+import com.nhnacademy.team4.taskapi.milestone.application.result.MilestoneResult;
+
 import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
 import com.nhnacademy.team4.taskapi.task.domain.Task;
 
@@ -12,7 +14,7 @@ public record TaskDetailResult(
         String title,
         String content,
         Long writerMemberId,
-        Long milestoneId,
+        MilestoneResult milestoneResult,
         List<TagResult> tags,
         List<CommentResult> comments
 ) {
@@ -23,7 +25,7 @@ public record TaskDetailResult(
                 task.getTitle(),
                 task.getContent(),
                 task.getWriterMemberId(),
-                task.getMilestoneId(),
+                MilestoneResult.from(task.getMilestone()),
                 tags,
                 comments
         );

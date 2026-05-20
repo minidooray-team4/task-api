@@ -1,9 +1,9 @@
 package com.nhnacademy.team4.taskapi.task.web.response;
 
-import com.nhnacademy.team4.taskapi.comment.application.result.CommentResult;
+
 
 import com.nhnacademy.team4.taskapi.comment.web.response.CommentResponse;
-import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
+import com.nhnacademy.team4.taskapi.milestone.web.response.MilestoneResponse;
 import com.nhnacademy.team4.taskapi.tags.web.response.TagResponse;
 import com.nhnacademy.team4.taskapi.task.application.result.TaskDetailResult;
 
@@ -15,12 +15,26 @@ public record TaskDetailResponse(
         String title,
         String content,
         Long writerMemberId,
-        Long milestoneId,
+        MilestoneResponse milestoneResponse,
         List<TagResponse> tags,
         List<CommentResponse> comments
 
 ) {
     public static TaskDetailResponse from(TaskDetailResult taskDetail) {
-       return null;
+        return new TaskDetailResponse(
+                taskDetail.id(),
+                taskDetail.projectId(),
+                taskDetail.title(),
+                taskDetail.content(),
+                taskDetail.writerMemberId(),
+                MilestoneResponse.from(taskDetail.milestoneResult()),
+                taskDetail.tags()
+                        .stream()
+                        .map(TagResponse::from)
+                        .toList(),
+                taskDetail.comments().stream()
+                        .map(CommentResponse::from)
+                        .toList()
+        );
     }
 }

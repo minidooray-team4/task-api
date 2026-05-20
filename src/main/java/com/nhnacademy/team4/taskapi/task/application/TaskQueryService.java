@@ -4,15 +4,14 @@ package com.nhnacademy.team4.taskapi.task.application;
 import com.nhnacademy.team4.taskapi.comment.application.result.CommentResult;
 import com.nhnacademy.team4.taskapi.global.exception.BusinessException;
 
-import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
+
 import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
 import com.nhnacademy.team4.taskapi.tags.persistence.TagRepository;
 import com.nhnacademy.team4.taskapi.task.application.command.GetProjectTasksQuery;
 
 import com.nhnacademy.team4.taskapi.task.application.result.TaskDetailResult;
 import com.nhnacademy.team4.taskapi.task.application.result.TaskSummaryResult;
-import com.nhnacademy.team4.taskapi.task.application.usecase.GetProjectTasksUseCase;
-import com.nhnacademy.team4.taskapi.task.application.usecase.GetTaskDetailUseCase;
+
 import com.nhnacademy.team4.taskapi.task.domain.Task;
 import com.nhnacademy.team4.taskapi.task.infrastructure.TaskRepository;
 
@@ -27,19 +26,17 @@ import static com.nhnacademy.team4.taskapi.global.exception.ErrorCode.TASK_NOT_F
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
-public class TaskQueryService implements GetProjectTasksUseCase, GetTaskDetailUseCase {
+public class TaskQueryService  {
 
     private final TaskRepository taskRepository;
     private final TagRepository tagRepository;
 
-    @Override
     public List<TaskSummaryResult> getProjectTasks(GetProjectTasksQuery query) {
         //미구현
         return List.of();
     }
 
 
-    @Override
     public TaskDetailResult getTaskDetail(Long taskId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new BusinessException(TASK_NOT_FOUND));
