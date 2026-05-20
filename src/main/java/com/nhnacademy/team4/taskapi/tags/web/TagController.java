@@ -25,7 +25,7 @@ public class TagController {
     private final TagQueryService tagQueryService;
 
     @PostMapping("/projects/{projectId}/tags")
-    public ResponseEntity<TagResponse> addTag(
+    public ResponseEntity<Void> addTag(
             @PathVariable Long projectId,
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId,
             @RequestBody CreateTagRequest request
@@ -50,7 +50,7 @@ public class TagController {
     }
 
     @PatchMapping("/tags/{tagId}")
-    public ResponseEntity<TagResponse> updateTag(
+    public ResponseEntity<Void> updateTag(
             @PathVariable Long tagId,
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId,
             @RequestBody UpdateTagRequest request
