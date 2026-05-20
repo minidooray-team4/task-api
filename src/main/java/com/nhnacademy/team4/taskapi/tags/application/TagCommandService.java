@@ -10,7 +10,6 @@ import com.nhnacademy.team4.taskapi.tags.application.command.CreateTagCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.DetachTagFromTaskCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.UpdateTagCommand;
 import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
-import com.nhnacademy.team4.taskapi.tags.application.usecase.*;
 import com.nhnacademy.team4.taskapi.tags.domain.Tag;
 import com.nhnacademy.team4.taskapi.tags.persistence.TagRepository;
 import com.nhnacademy.team4.taskapi.task.domain.Task;
@@ -81,7 +80,7 @@ public class TagCommandService {
     public void detachTagFromTask(DetachTagFromTaskCommand command) {
         //TODO task_tags 구현 후
         Tag tag = tagRepository.findById(command.tagId()).orElseThrow(() -> new BusinessException(ErrorCode.TAG_NOT_FOUND));
-        taskTagRepository.deleteByTaskIdAndTagId(command.taskId(), command.tagId());
+        taskTagRepository.deleteByTask_IdAndTag_Id(command.taskId(), command.tagId());
     }
 
 }
