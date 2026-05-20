@@ -10,7 +10,6 @@ import com.nhnacademy.team4.taskapi.tags.application.command.CreateTagCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.DetachTagFromTaskCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.UpdateTagCommand;
 import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
-import com.nhnacademy.team4.taskapi.tags.application.usecase.*;
 import com.nhnacademy.team4.taskapi.tags.domain.Tag;
 import com.nhnacademy.team4.taskapi.tags.persistence.TagRepository;
 import com.nhnacademy.team4.taskapi.task.domain.Task;
@@ -25,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, DeleteTagUseCase, AttachTagToTaskUseCase, DetachTagFromTaskUseCase {
+public class TagCommandService {
 
     private final TaskRepository taskRepository;
     private final TagRepository tagRepository;
@@ -33,7 +32,6 @@ public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, De
     private final ProjectRepository projectRepository;
 
 
-    @Override
     public TagResult createTag(CreateTagCommand command) {
         Project project = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
@@ -47,7 +45,6 @@ public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, De
         return TagResult.from(savedTag);
     }
 
-    @Override
     public void deleteTag(Long tagId, Long requesterMemberId) {
         Tag tag = tagRepository.findById(tagId)
                 .orElseThrow(() -> new RuntimeException("Tag not found"));
@@ -55,7 +52,6 @@ public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, De
         tagRepository.delete(tag);
     }
 
-    @Override
     public TagResult updateTag(UpdateTagCommand command) {
         Tag tag = tagRepository.findById(command.tagId())
                 .orElseThrow(() -> new RuntimeException(("Tag not found")));
@@ -64,7 +60,6 @@ public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, De
         return TagResult.from(tag);
     }
 
-    @Override
     public void attachTagToTask(AttachTagToTaskCommand command) {
         //TODO task_tags 구현 후
         Task task = taskRepository.findById(command.taskId())
@@ -82,7 +77,6 @@ public class TagCommandService implements CreateTagUseCase, UpdateTagUseCase, De
 
     }
 
-    @Override
     public void detachTagFromTask(DetachTagFromTaskCommand command) {
         //TODO task_tags 구현 후
         Tag tag = tagRepository.findById(command.tagId()).orElseThrow(() -> new BusinessException(ErrorCode.TAG_NOT_FOUND));
