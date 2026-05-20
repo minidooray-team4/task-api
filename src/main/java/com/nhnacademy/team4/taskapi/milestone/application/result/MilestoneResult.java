@@ -1,17 +1,17 @@
 package com.nhnacademy.team4.taskapi.milestone.application.result;
 
 
-import com.nhnacademy.team4.taskapi.milestone.domain.MileStone;
+import com.nhnacademy.team4.taskapi.milestone.domain.Milestone;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public record MilestoneResult(
         Long id,
         Long projectId,
         String name,
-        Date dueDate
+        LocalDate dueDate
 ) {
-    public static MilestoneResult from(MileStone mileStone) {
+    public static MilestoneResult from(Milestone mileStone) {
         return new MilestoneResult(mileStone.getId(),mileStone.getProject().getId(),mileStone.getName(),mileStone.getDueDate());
     }
 }

@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `tasks` (
                                        CONSTRAINT `fk_tasks_milestone`
                                            FOREIGN KEY (`project_id`, `milestone_id`)
                                                REFERENCES `milestones` (`project_id`, `id`)
-                                               ON DELETE CASCADE
+                                               ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 -- =========================
