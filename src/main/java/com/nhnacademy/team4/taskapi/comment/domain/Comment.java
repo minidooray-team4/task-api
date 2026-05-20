@@ -26,5 +26,9 @@ public class Comment extends BaseTimeEntity {
 
     private String content;
 
+    public Long getTaskId() {
+        return task.getId();
+    }
+
 
 }

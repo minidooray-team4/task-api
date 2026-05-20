@@ -12,6 +12,9 @@ public record MilestoneResult(
         LocalDate dueDate
 ) {
     public static MilestoneResult from(Milestone mileStone) {
-        return new MilestoneResult(mileStone.getId(),mileStone.getProject().getId(),mileStone.getName(),mileStone.getDueDate());
+        if (mileStone == null) {
+            return null;
+        }
+        return new MilestoneResult(mileStone.getId(), mileStone.getProject().getId(), mileStone.getName(), mileStone.getDueDate());
     }
 }

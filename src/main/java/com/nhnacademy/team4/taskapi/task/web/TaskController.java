@@ -64,11 +64,15 @@ public class TaskController {
     }
 
     @DeleteMapping("/tasks/{taskId}")
-    public void deleteTask(
+    public ResponseEntity<Void> deleteTask(
             @PathVariable Long taskId,
             @RequestHeader("X-MEMBER-ID") Long writerMemberId
     ) {
         taskCommandService.deleteTask(taskId, writerMemberId);
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
 
