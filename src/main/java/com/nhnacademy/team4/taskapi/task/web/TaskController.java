@@ -5,18 +5,24 @@ import com.nhnacademy.team4.taskapi.task.application.TaskCommandService;
 import com.nhnacademy.team4.taskapi.task.application.TaskQueryService;
 import com.nhnacademy.team4.taskapi.task.application.command.AssignMilestoneToTaskCommand;
 import com.nhnacademy.team4.taskapi.task.application.command.CreateTaskCommand;
+import com.nhnacademy.team4.taskapi.task.application.command.GetProjectTasksQuery;
 import com.nhnacademy.team4.taskapi.task.application.command.UpdateTaskCommand;
 import com.nhnacademy.team4.taskapi.task.application.result.TaskDetailResult;
 
+import com.nhnacademy.team4.taskapi.task.application.result.TaskSummaryResult;
 import com.nhnacademy.team4.taskapi.task.web.request.CreateTaskRequest;
 import com.nhnacademy.team4.taskapi.task.web.request.UpdateTaskRequest;
 import com.nhnacademy.team4.taskapi.task.web.response.TaskDetailResponse;
 
+import com.nhnacademy.team4.taskapi.task.web.response.TaskResponse;
+import com.nhnacademy.team4.taskapi.task.web.response.TaskSummaryResponse;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -99,6 +105,26 @@ public class TaskController {
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
+    }
+
+    @GetMapping("/projects/{projectId}/tasks")
+    public ResponseEntity<List<TaskSummaryResponse>> getTasks(
+            @RequestHeader("X-MEMBER-ID") Long writerMemberId,
+            @PathVariable Long projectId,
+            @RequestParam(required = false) Long tagId,
+            @RequestParam(required = false) Long milestoneId
+    ) {
+        GetProjectTasksQuery query = GetProjectTasksQuery.toQuery(projectId, milestoneId,tagId,writerMemberId);
+        List<TaskSummaryResult> result = taskQueryService.getProjectTasks(query);
+
+        List<TaskSummaryResponse> responses =
+                result.stream()
+                        .map(TaskSummaryResponse::from)
+                        .toList();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responses);
     }
 
 }
