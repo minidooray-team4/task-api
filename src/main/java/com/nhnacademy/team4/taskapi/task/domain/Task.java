@@ -85,12 +85,20 @@ public class Task extends BaseTimeEntity {
         return getProject().getId();
     }
 
-    public void update(String title,String content){
-        if(title != null){
+    public void update(String title, String content) {
+        if (title != null) {
             this.title = title;
         }
-        if(content != null){
+        if (content != null) {
             this.content = content;
         }
+    }
+
+    public void assignMilestone(Milestone milestone) {
+        this.milestone = milestone;
+    }
+
+    public void detachMilestone() {
+        this.milestone = null;
     }
 }
