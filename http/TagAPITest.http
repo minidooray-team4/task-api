@@ -22,7 +22,7 @@ X-MEMBER-ID: 100
 
 
 ### Tag 삭제
-DELETE localhost:8080/api/tags/15
+DELETE localhost:8080/api/tags/16
 X-MEMBER-ID: 100
 
 ### Task에 Tag 연결 -> task_tags 구현 후 테스트
