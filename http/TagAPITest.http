@@ -1,5 +1,5 @@
 ### Tag 생성
-POST localhost:8080/api/projects/2/tags
+POST localhost:8080/api/projects/1/tags
 Content-Type: application/json
 X-MEMBER-ID: 100
 

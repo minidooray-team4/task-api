@@ -5,4 +5,7 @@ public record AssignMilestoneToTaskCommand(
         Long milestoneId,
         Long requesterMemberId
 ) {
+    public static AssignMilestoneToTaskCommand toCommand(Long taskId, Long milestoneId, Long writerMemberId) {
+        return new AssignMilestoneToTaskCommand(taskId, milestoneId, writerMemberId);
+    }
 }

@@ -51,13 +51,13 @@ public class TaskQueryService {
 
         validateProjectAccess(task.getProjectId(), task.getWriterMemberId());
 
-        List<TagResult> tagList = taskTagRepository.findByTaskId(taskId)
+        List<TagResult> tagList = taskTagRepository.findByTask_Id(taskId)
                 .stream()
                 .map(TaskTag::getTag)
                 .map(TagResult::from)
                 .toList();
 
-        List<CommentResult> commentList = commentRepository.findByTaskId(taskId)
+        List<CommentResult> commentList = commentRepository.findByTask_Id(taskId)
                 .stream()
                 .map(CommentResult::from)
                 .toList();
