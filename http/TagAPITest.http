@@ -12,7 +12,7 @@ GET localhost:8080/api/projects/1/tags
 X-MEMBER-ID: 100
 
 ### Tag 수정
-PATCH localhost:8080/api/tags/18
+PATCH localhost:8080/api/tags/17
 Content-Type: application/json
 X-MEMBER-ID: 100
 

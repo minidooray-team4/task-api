@@ -32,7 +32,7 @@ public class TagCommandService {
     private final ProjectRepository projectRepository;
 
 
-    public TagResult createTag(CreateTagCommand command) {
+    public void createTag(CreateTagCommand command) {
         Project project = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
@@ -41,23 +41,21 @@ public class TagCommandService {
         }
 
         Tag tag = Tag.create(project, command.name());
-        Tag savedTag = tagRepository.save(tag);
-        return TagResult.from(savedTag);
+        tagRepository.save(tag);
     }
 
     public void deleteTag(Long tagId, Long requesterMemberId) {
         Tag tag = tagRepository.findById(tagId)
-                .orElseThrow(() -> new RuntimeException("Tag not found"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.TAG_NOT_FOUND));
 
         tagRepository.delete(tag);
     }
 
-    public TagResult updateTag(UpdateTagCommand command) {
+    public void updateTag(UpdateTagCommand command) {
         Tag tag = tagRepository.findById(command.tagId())
-                .orElseThrow(() -> new RuntimeException(("Tag not found")));
+                .orElseThrow(() -> new BusinessException((ErrorCode.TAG_NOT_FOUND)));
 
         tag.rename(command.name());
-        return TagResult.from(tag);
     }
 
     public void attachTagToTask(AttachTagToTaskCommand command) {
@@ -72,6 +70,10 @@ public class TagCommandService {
             throw new BusinessException(ErrorCode.FORBIDDEN);
         }
 
+        if(taskTagRepository.existsByTask_IdAndTag_Id(command.taskId(),command.tagId())){
+            throw new BusinessException(ErrorCode.TAG_ALREADY_EXISTS);
+        }
+
         TaskTag taskTag = TaskTag.create(task, tag, task.getProject().getId());
         taskTagRepository.save(taskTag);
 
@@ -79,7 +81,9 @@ public class TagCommandService {
 
     public void detachTagFromTask(DetachTagFromTaskCommand command) {
         //TODO task_tags 구현 후
-        Tag tag = tagRepository.findById(command.tagId()).orElseThrow(() -> new BusinessException(ErrorCode.TAG_NOT_FOUND));
+        Tag tag = tagRepository.findById(command.tagId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.TAG_NOT_FOUND));
+
         taskTagRepository.deleteByTask_IdAndTag_Id(command.taskId(), command.tagId());
     }
 
