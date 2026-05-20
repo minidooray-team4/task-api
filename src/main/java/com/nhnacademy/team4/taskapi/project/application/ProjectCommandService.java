@@ -5,12 +5,7 @@ import com.nhnacademy.team4.taskapi.global.exception.ErrorCode;
 import com.nhnacademy.team4.taskapi.project.application.command.AddProjectMemberCommand;
 import com.nhnacademy.team4.taskapi.project.application.command.CreateProjectCommand;
 import com.nhnacademy.team4.taskapi.project.application.command.UpdateProjectCommand;
-
-import com.nhnacademy.team4.taskapi.project.application.usecase.AddProjectMemberUseCase;
-import com.nhnacademy.team4.taskapi.project.application.usecase.CreateProjectUseCase;
-import com.nhnacademy.team4.taskapi.project.application.usecase.UpdateProjectUseCase;
 import com.nhnacademy.team4.taskapi.project.domain.Project;
-
 import com.nhnacademy.team4.taskapi.project.domain.ProjectMembers;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectMemberRepository;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
@@ -21,12 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ProjectCommandService implements AddProjectMemberUseCase, CreateProjectUseCase, UpdateProjectUseCase {
+public class ProjectCommandService {
 
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
 
-    @Override
     public void addProjectMember(AddProjectMemberCommand command) {
 
         Project project = projectRepository.findById(command.projectId())
@@ -43,7 +37,6 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
         projectMemberRepository.save(projectMembers);
     }
 
-    @Override
     public Long createProject(CreateProjectCommand command) {
 
         Project project = Project.create(
@@ -63,7 +56,6 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
 
     }
 
-    @Override
     public void updateProject(UpdateProjectCommand command) {
 
         Project project = projectRepository.findById(command.projectId())
@@ -86,6 +78,5 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
             throw new BusinessException(ErrorCode.PROJECT_MEMBER_ALREADY_EXISTS);
         }
     }
-
 
 }

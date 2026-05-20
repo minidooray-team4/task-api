@@ -7,9 +7,6 @@ import com.nhnacademy.team4.taskapi.milestone.infrastructure.MilestoneRepository
 import com.nhnacademy.team4.taskapi.project.application.result.ProjectDetailResult;
 import com.nhnacademy.team4.taskapi.project.application.result.ProjectMemberResult;
 import com.nhnacademy.team4.taskapi.project.application.result.ProjectSummaryResult;
-import com.nhnacademy.team4.taskapi.project.application.usecase.GetMyProjectUseCase;
-import com.nhnacademy.team4.taskapi.project.application.usecase.GetProjectDetailUseCase;
-import com.nhnacademy.team4.taskapi.project.application.usecase.GetProjectMembersUseCase;
 import com.nhnacademy.team4.taskapi.project.domain.Project;
 import com.nhnacademy.team4.taskapi.project.domain.ProjectMembers;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectMemberRepository;
@@ -28,7 +25,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ProjectQueryService implements GetMyProjectUseCase, GetProjectDetailUseCase, GetProjectMembersUseCase {
+public class ProjectQueryService {
 
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
@@ -36,7 +33,6 @@ public class ProjectQueryService implements GetMyProjectUseCase, GetProjectDetai
     private final TaskRepository taskRepository;
     private final MilestoneRepository milestoneRepository;
 
-    @Override
     public List<ProjectSummaryResult> getMyProjects(Long memberId) {
         List<ProjectMembers> myProjects =
                 projectMemberRepository.findByMemberId(memberId);
@@ -47,7 +43,6 @@ public class ProjectQueryService implements GetMyProjectUseCase, GetProjectDetai
                 .toList();
     }
 
-    @Override
     public ProjectDetailResult getProjectDetail(Long projectId, Long requesterMemberId) {
 
         Project project = projectRepository.findById(projectId)
@@ -80,7 +75,6 @@ public class ProjectQueryService implements GetMyProjectUseCase, GetProjectDetai
 
     }
 
-    @Override
     public List<ProjectMemberResult> getProjectMembers(Long projectId, Long requesterMemberId) {
 
         // Project 존재유무 및 멤버인지 검증

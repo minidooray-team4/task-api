@@ -2,11 +2,9 @@ package com.nhnacademy.team4.taskapi.milestone.web;
 
 import com.nhnacademy.team4.taskapi.milestone.application.command.CreateMilestoneCommand;
 import com.nhnacademy.team4.taskapi.milestone.application.command.UpdateMilestoneCommand;
+import com.nhnacademy.team4.taskapi.milestone.application.MilestoneCommandService;
+import com.nhnacademy.team4.taskapi.milestone.application.MilestoneQueryService;
 import com.nhnacademy.team4.taskapi.milestone.application.result.MilestoneResult;
-import com.nhnacademy.team4.taskapi.milestone.application.usecase.CreateMilestoneUseCase;
-import com.nhnacademy.team4.taskapi.milestone.application.usecase.DeleteMilestoneUseCase;
-import com.nhnacademy.team4.taskapi.milestone.application.usecase.GetProjectMilestonesUseCase;
-import com.nhnacademy.team4.taskapi.milestone.application.usecase.UpdateMilestoneUseCase;
 import com.nhnacademy.team4.taskapi.milestone.web.request.CreateMilestoneRequest;
 
 import com.nhnacademy.team4.taskapi.milestone.web.request.UpdateMilestoneRequest;
@@ -23,10 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MilestoneController {
 
-    private final CreateMilestoneUseCase createMilestoneUseCase;
-    private final DeleteMilestoneUseCase deleteMilestoneUseCase;
-    private final UpdateMilestoneUseCase updateMilestoneUseCase;
-    private final GetProjectMilestonesUseCase getProjectMilestonesUseCase;
+    private final MilestoneCommandService milestoneCommandService;
+    private final MilestoneQueryService milestoneQueryService;
 
     @PostMapping("/projects/{projectId}/milestones")
     public ResponseEntity<Void> createMilestone(
@@ -35,7 +31,7 @@ public class MilestoneController {
             @RequestBody CreateMilestoneRequest request
     ) {
         CreateMilestoneCommand command = request.toCommand(projectId, requesterMemberId);
-        createMilestoneUseCase.createMilestone(command);
+        milestoneCommandService.createMilestone(command);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
@@ -46,7 +42,7 @@ public class MilestoneController {
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId,
             @PathVariable Long projectId
     ) {
-        List<MilestoneResult> results = getProjectMilestonesUseCase.getProjectMilestones(projectId, requesterMemberId);
+        List<MilestoneResult> results = milestoneQueryService.getProjectMilestones(projectId, requesterMemberId);
 
         List<MilestoneResponse> responses = results.stream()
                 .map(MilestoneResponse::from)
@@ -65,7 +61,7 @@ public class MilestoneController {
             @RequestBody UpdateMilestoneRequest request
     ) {
         UpdateMilestoneCommand command = request.toCommand(milestoneId, requesterMemberId);
-        updateMilestoneUseCase.updateMilestone(command);
+        milestoneCommandService.updateMilestone(command);
 
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
@@ -77,7 +73,7 @@ public class MilestoneController {
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId,
             @PathVariable Long milestoneId
     ) {
-        deleteMilestoneUseCase.deleteMilestone(milestoneId,requesterMemberId);
+        milestoneCommandService.deleteMilestone(milestoneId,requesterMemberId);
 
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

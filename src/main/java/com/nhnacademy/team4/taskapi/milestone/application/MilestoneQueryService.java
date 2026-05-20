@@ -3,7 +3,6 @@ package com.nhnacademy.team4.taskapi.milestone.application;
 import com.nhnacademy.team4.taskapi.global.exception.BusinessException;
 import com.nhnacademy.team4.taskapi.global.exception.ErrorCode;
 import com.nhnacademy.team4.taskapi.milestone.application.result.MilestoneResult;
-import com.nhnacademy.team4.taskapi.milestone.application.usecase.GetProjectMilestonesUseCase;
 import com.nhnacademy.team4.taskapi.milestone.domain.Milestone;
 import com.nhnacademy.team4.taskapi.milestone.infrastructure.MilestoneRepository;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectMemberRepository;
@@ -16,11 +15,10 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class MilestoneQueryService implements GetProjectMilestonesUseCase {
+public class MilestoneQueryService {
     private final MilestoneRepository milestoneRepository;
     private final ProjectMemberRepository projectMemberRepository;
 
-    @Override
     public List<MilestoneResult> getProjectMilestones(Long projectId, Long requesterMemberId) {
         validateProjectMember(projectId, requesterMemberId);
 
