@@ -25,17 +25,16 @@ public class TagController {
     private final TagQueryService tagQueryService;
 
     @PostMapping("/projects/{projectId}/tags")
-    public ResponseEntity<TagResponse> addTag(
+    public ResponseEntity<Void> addTag(
             @PathVariable Long projectId,
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId,
             @RequestBody CreateTagRequest request
     ){
-        CreateTagCommand command=request.toCreateTagCommand(projectId,requesterMemberId);
-        TagResult tagResult=tagCommandService.createTag(command);
+        tagCommandService.createTag(request.toCreateTagCommand(projectId,requesterMemberId));
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(TagResponse.from(tagResult));
+                .build();
     }
 
     @GetMapping("/projects/{projectId}/tags")
@@ -50,15 +49,15 @@ public class TagController {
     }
 
     @PatchMapping("/tags/{tagId}")
-    public ResponseEntity<TagResponse> updateTag(
+    public ResponseEntity<Void> updateTag(
             @PathVariable Long tagId,
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId,
             @RequestBody UpdateTagRequest request
     ){
-        TagResult tagResult=tagCommandService.updateTag(request.toUpdateTagCommand(tagId,requesterMemberId));
+        tagCommandService.updateTag(request.toUpdateTagCommand(tagId,requesterMemberId));
+
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(TagResponse.from(tagResult));
+                .status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/tags/{tagId}")

@@ -4,7 +4,7 @@ Content-Type: application/json
 X-MEMBER-ID: 100
 
 {
-  "name": "sangbaek6"
+  "name": "sangbaek4"
 }
 
 ### 프로젝트 태그 목록 조회
@@ -12,25 +12,25 @@ GET localhost:8080/api/projects/1/tags
 X-MEMBER-ID: 100
 
 ### Tag 수정
-PATCH localhost:8080/api/tags/1
+PATCH localhost:8080/api/tags/17
 Content-Type: application/json
 X-MEMBER-ID: 100
 
 {
-  "name": "sangbaek4"
+  "name": "sangbaek5"
 }
 
 
-### Tag 삭제 -> task_tags 구현 후 테스트
-DELETE localhost:8080/api/tags/1
+### Tag 삭제
+DELETE localhost:8080/api/tags/17
 X-MEMBER-ID: 100
 
 ### Task에 Tag 연결 -> task_tags 구현 후 테스트
-PUT localhost:8080/api/tasks/1/tags/1
+PUT localhost:8080/api/tasks/1/tags/19
 X-MEMBER-ID: 100
 
 ### Task에서 Tag 제거 -> task_tags 구현 후 테스트
-DELETE localhost:8080/api/tasks/1/tags/1
+DELETE localhost:8080/api/tasks/1/tags/19
 X-MEMBER-ID: 100
 
 ###
