@@ -41,10 +41,11 @@ public class TaskController {
 
     @GetMapping("/tasks/{taskId}")
     public ResponseEntity<TaskDetailResponse> getTaskDetails(
-            @PathVariable Long taskId
+            @PathVariable Long taskId,
+            @RequestHeader("X-MEMBER-ID") Long writerMemberId
 
     ) {
-        TaskDetailResult taskDetail = taskQueryService.getTaskDetail(taskId);
+        TaskDetailResult taskDetail = taskQueryService.getTaskDetail(taskId,writerMemberId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(TaskDetailResponse.from(taskDetail));
