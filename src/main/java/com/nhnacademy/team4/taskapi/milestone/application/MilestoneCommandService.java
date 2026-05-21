@@ -56,7 +56,7 @@ public class MilestoneCommandService {
         //해당 프로젝트 멤버인지 검증
         validateProjectMember(milestone.getProjectId(), command.requesterMemberId());
 
-        milestone.update(command.name(),command.dueDate());
+        milestone.update(command.name(),command.dueDate(),command.clearDueDate());
 
     }
 

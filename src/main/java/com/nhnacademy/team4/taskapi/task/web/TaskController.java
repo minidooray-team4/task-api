@@ -3,6 +3,7 @@ package com.nhnacademy.team4.taskapi.task.web;
 
 import com.nhnacademy.team4.taskapi.task.application.TaskCommandService;
 import com.nhnacademy.team4.taskapi.task.application.TaskQueryService;
+import com.nhnacademy.team4.taskapi.task.application.command.AssignMilestoneToTaskCommand;
 import com.nhnacademy.team4.taskapi.task.application.command.CreateTaskCommand;
 import com.nhnacademy.team4.taskapi.task.application.command.UpdateTaskCommand;
 import com.nhnacademy.team4.taskapi.task.application.result.TaskDetailResult;
@@ -64,12 +65,40 @@ public class TaskController {
     }
 
     @DeleteMapping("/tasks/{taskId}")
-    public void deleteTask(
+    public ResponseEntity<Void> deleteTask(
             @PathVariable Long taskId,
             @RequestHeader("X-MEMBER-ID") Long writerMemberId
     ) {
         taskCommandService.deleteTask(taskId, writerMemberId);
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
+    @PutMapping("/tasks/{taskId}/milestone/{milestoneId}")
+    public ResponseEntity<Void> setMilestone(
+            @RequestHeader("X-MEMBER-ID") Long writerMemberId,
+            @PathVariable Long taskId,
+            @PathVariable Long milestoneId
+    ) {
+        AssignMilestoneToTaskCommand command = AssignMilestoneToTaskCommand.toCommand(taskId, milestoneId, writerMemberId);
+        taskCommandService.assignMilestoneToTask(command);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .build();
+    }
+
+    @DeleteMapping("/tasks/{taskId}/milestone")
+    public ResponseEntity<Void> deleteMilestone(
+            @RequestHeader("X-MEMBER-ID") Long writerMemberId,
+            @PathVariable Long taskId
+    ) {
+        taskCommandService.detachMilestoneFromTask(taskId, writerMemberId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+    }
 
 }

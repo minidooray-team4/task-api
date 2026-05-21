@@ -11,6 +11,9 @@ public record MilestoneResponse(
         LocalDate dueDate
 ) {
     public static MilestoneResponse from(MilestoneResult milestoneResult) {
+        if(milestoneResult == null) {
+            return null;
+        }
         return new MilestoneResponse(
                 milestoneResult.id(),
                 milestoneResult.projectId(),

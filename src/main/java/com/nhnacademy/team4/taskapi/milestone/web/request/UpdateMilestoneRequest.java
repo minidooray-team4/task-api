@@ -5,7 +5,8 @@ import java.time.LocalDate;
 
 public record UpdateMilestoneRequest(
         String name,
-        LocalDate dueDate
+        LocalDate dueDate,
+        boolean clearDueDate
 ) {
     public UpdateMilestoneRequest {
         if (name != null && name.isBlank()) {
@@ -21,7 +22,8 @@ public record UpdateMilestoneRequest(
                 milestoneId,
                 requesterMemberId,
                 name,
-                dueDate
+                dueDate,
+                clearDueDate
         );
     }
 }

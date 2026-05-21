@@ -8,16 +8,19 @@ import com.nhnacademy.team4.taskapi.milestone.infrastructure.MilestoneRepository
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectMemberRepository;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
 import com.nhnacademy.team4.taskapi.project.domain.Project;
+
+import com.nhnacademy.team4.taskapi.tags.persistence.TagRepository;
 import com.nhnacademy.team4.taskapi.task.application.command.*;
-import com.nhnacademy.team4.taskapi.task.application.result.TaskResult;
+
 
 import com.nhnacademy.team4.taskapi.task.domain.Task;
 import com.nhnacademy.team4.taskapi.task.infrastructure.TaskRepository;
+import com.nhnacademy.team4.taskapi.task.infrastructure.TaskTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.nhnacademy.team4.taskapi.global.exception.ErrorCode.PROJECT_NOT_FOUND;
+import static com.nhnacademy.team4.taskapi.global.exception.ErrorCode.*;
 
 
 @Service
@@ -26,14 +29,30 @@ import static com.nhnacademy.team4.taskapi.global.exception.ErrorCode.PROJECT_NO
 public class TaskCommandService {
 
     private final TaskRepository taskRepository;
+    private final TagRepository tagRepository;
+    private final TaskTagRepository taskTagRepository;
     private final ProjectRepository projectRepository;
     private final MilestoneRepository milestoneRepository;
     private final ProjectMemberRepository projectMemberRepository;
 
 
-    public TaskResult assignMilestoneToTask(AssignMilestoneToTaskCommand command) {
-        //미구현
-        return null;
+    public void assignMilestoneToTask(AssignMilestoneToTaskCommand command) {
+
+        Task task = taskRepository.findById(command.taskId())
+                .orElseThrow(() -> new BusinessException(TASK_NOT_FOUND));
+
+        // 프로젝트에 존재하는 학생인지 검증
+        validateProjectMember(task.getProjectId(), command.requesterMemberId());
+
+        Milestone milestone = milestoneRepository
+                .findByProject_IdAndId(
+                        task.getProjectId(),
+                        command.milestoneId()
+                )
+                .orElseThrow(() -> new BusinessException(MILESTONE_NOT_FOUND));
+
+        task.assignMilestone(milestone);
+
     }
 
 
@@ -43,18 +62,22 @@ public class TaskCommandService {
                 .orElseThrow(() -> new BusinessException(PROJECT_NOT_FOUND));
 
         // 프로젝트 멤버 검증
-        validateProjectMember(command.projectId(), command.requesterMemberId());
+        validateProjectMember(
+                command.projectId(),
+                command.requesterMemberId()
+        );
 
         Milestone milestone = null;
 
-        // 마일스톤이 프로젝트내 존재하는지 검증
+        // 마일스톤이 프로젝트 내 존재하는지 검증
         if (command.milestoneId() != null) {
-            milestone = milestoneRepository.findById(command.milestoneId())
-                    .orElseThrow(() -> new BusinessException(ErrorCode.MILESTONE_NOT_FOUND));
-
-            if (!milestone.getProject().getId().equals(project.getId())) {
-                throw new BusinessException(ErrorCode.INVALID_MILESTONE_PROJECT);
-            }
+            milestone = milestoneRepository
+                    .findByProject_IdAndId(
+                            command.projectId(),
+                            command.milestoneId()
+                    )
+                    .orElseThrow(() ->
+                            new BusinessException(INVALID_MILESTONE_PROJECT));
         }
 
         Task newTask = Task.create(
@@ -66,7 +89,6 @@ public class TaskCommandService {
         );
 
         taskRepository.save(newTask);
-
     }
 
     public void updateTask(UpdateTaskCommand command) {
@@ -83,9 +105,16 @@ public class TaskCommandService {
     }
 
 
-    public TaskResult removeMilestoneFromTask(Long taskId, Long requesterMemberId) {
+    public void detachMilestoneFromTask(Long taskId, Long requesterMemberId) {
 
-        return null;
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new BusinessException(TASK_NOT_FOUND));
+
+        // 프로젝트에 존재하는 학생인지 검증
+        validateProjectMember(task.getProjectId(), requesterMemberId);
+
+        task.detachMilestone();
+
     }
 
 

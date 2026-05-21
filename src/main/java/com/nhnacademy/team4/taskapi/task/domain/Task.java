@@ -19,12 +19,25 @@ public class Task extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // project FK
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
-    // 복합 FK
+
+    @Column(name = "milestone_id")
+    private Long milestoneId;
+
+    /**
+     * milestone FK
+     * <p>
+     * DB 복합 FK:
+     * (project_id, milestone_id)
+     * -> milestones(project_id, id)
+     * <p>
+     * project_id 컬럼은 Project 연관관계가 관리하고 있으므로
+     * 여기서는 읽기 전용(insertable/updatable=false) 처리
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(
@@ -41,7 +54,6 @@ public class Task extends BaseTimeEntity {
             )
     })
     private Milestone milestone;
-
 
     @Column(nullable = false, length = 200)
     private String title;
@@ -67,7 +79,13 @@ public class Task extends BaseTimeEntity {
         this.writerMemberId = writerMemberId;
     }
 
-    public static Task create(String title, String content, Milestone milestone, Project project, Long writerMemberId) {
+    public static Task create(
+            String title,
+            String content,
+            Milestone milestone,
+            Project project,
+            Long writerMemberId
+    ) {
         return Task.builder()
                 .title(title)
                 .content(content)
@@ -82,15 +100,26 @@ public class Task extends BaseTimeEntity {
     }
 
     public Long getProjectId() {
-        return getProject().getId();
+        return project.getId();
     }
 
-    public void update(String title,String content){
-        if(title != null){
+    public void update(String title, String content) {
+        if (title != null) {
             this.title = title;
         }
-        if(content != null){
+
+        if (content != null) {
             this.content = content;
         }
+    }
+
+    public void assignMilestone(Milestone milestone) {
+        this.milestone = milestone;
+        this.milestoneId = milestone.getId();
+    }
+
+    public void detachMilestone() {
+        this.milestone = null;
+        this.milestoneId = null;
     }
 }
