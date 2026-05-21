@@ -2,8 +2,7 @@ package com.nhnacademy.team4.taskapi.task_api;
 
 import com.nhnacademy.team4.taskapi.tags.web.request.CreateTagRequest;
 import com.nhnacademy.team4.taskapi.tags.web.request.UpdateTagRequest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -19,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("local") //로컬 환경 설정 사용
 @AutoConfigureMockMvc    //실제 서버없이 테스트 가능,목 자동 주입
 @Transactional           //자꾸 태그 삭제되서 테스트 실패해서 붙임
-public class TagTest {
+public class Tag200Test {
 
     @Autowired
     MockMvc mockMvc;
@@ -63,7 +62,7 @@ public class TagTest {
     @DisplayName("태그 삭제 -> 204")
     void DeleteTag204() throws Exception {
         mockMvc.perform(delete("/api/tags/12")
-                .header("X-MEMBER-ID",100))
+                        .header("X-MEMBER-ID",100))
                 .andExpect(status().isNoContent());
     }
 
@@ -78,6 +77,11 @@ public class TagTest {
     @Test
     @DisplayName("Task에서 Tag 제거 -> 204")
     void InTeskDeleteTag204() throws Exception {
+        mockMvc.perform(put("/api/tasks/1/tags/12")
+                .header("X-MEMBER-ID",100))
+                .andExpect(status().isNoContent());
+
+
         mockMvc.perform(delete("/api/tasks/1/tags/12")
                 .header("X-MEMBER-ID",100))
                 .andExpect(status().isNoContent());
