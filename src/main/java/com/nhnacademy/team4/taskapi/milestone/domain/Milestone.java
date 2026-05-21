@@ -1,6 +1,8 @@
 package com.nhnacademy.team4.taskapi.milestone.domain;
 
 import com.nhnacademy.team4.taskapi.common.domain.BaseTimeEntity;
+import com.nhnacademy.team4.taskapi.global.exception.BusinessException;
+import com.nhnacademy.team4.taskapi.global.exception.ErrorCode;
 import com.nhnacademy.team4.taskapi.project.domain.Project;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -59,9 +61,20 @@ public class Milestone extends BaseTimeEntity {
         return project.getId();
     }
 
-    public void update(String name, LocalDate dueDate) {
+    public void update(String name, LocalDate dueDate,boolean clearDueDate) {
         if (name != null) {
             this.name = name;
+        }
+
+        // 모순 검증
+        if (clearDueDate && dueDate != null) {
+            throw new BusinessException(ErrorCode.INVALID_REQUEST);
+        }
+
+        // dueDate 처리
+        if (clearDueDate) {
+            this.dueDate = null;
+            return;
         }
 
         if (dueDate != null) {

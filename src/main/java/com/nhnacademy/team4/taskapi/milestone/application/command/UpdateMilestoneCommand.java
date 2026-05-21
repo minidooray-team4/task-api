@@ -6,6 +6,7 @@ public record UpdateMilestoneCommand(
         Long milestoneId,
         Long requesterMemberId,
         String name,
-        LocalDate dueDate
+        LocalDate dueDate,
+        boolean clearDueDate
 ) {
 }

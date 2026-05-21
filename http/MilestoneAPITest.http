@@ -15,7 +15,8 @@ X-MEMBER-ID: 100
 
 {
     "name": "백엔드",
-    "dueDate": "2027-02-01"
+    "dueDate": "2027-02-02",
+    "clearDueDate": false
 }
 
 ### 마일스톤 삭제

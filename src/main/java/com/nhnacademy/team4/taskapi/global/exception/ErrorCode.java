@@ -17,7 +17,9 @@ public enum ErrorCode {
     TAG_NOT_FOUND(HttpStatus.NOT_FOUND, "TAG_NOT_FOUND", "태그를 찾을 수 없습니다."),
     MILESTONE_NOT_FOUND(HttpStatus.NOT_FOUND, "MILESTONE_NOT_FOUND", "마일스톤을 찾을수 없습니다"),
     INVALID_MILESTONE_PROJECT(HttpStatus.BAD_REQUEST, "INVALID_MILESTONE_PROJECT", "마일스톤이 해당프로젝트에 속하지 않습니다"),
-    MILESTONE_ALREADY_EXISTS(HttpStatus.CONFLICT, "MILESTONE_ALREADY_EXISTS", "해당 마일스톤명이 이미 해당프로젝트에 존재합니다");
+    MILESTONE_ALREADY_EXISTS(HttpStatus.CONFLICT, "MILESTONE_ALREADY_EXISTS", "해당 마일스톤명이 이미 해당프로젝트에 존재합니다"),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND,"COMMENT_NOT_FOUND" ,"해당 코멘트가 존재하지 않습니다" ),
+    INVALID_REQUEST(HttpStatus.BAD_REQUEST,"INVALID_REQUEST" ,"잘못된 요청입니다" );
 
 
     private final HttpStatus status;
