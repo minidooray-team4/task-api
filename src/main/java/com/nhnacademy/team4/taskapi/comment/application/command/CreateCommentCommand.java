@@ -5,4 +5,5 @@ public record CreateCommentCommand(
         Long requesterMemberId,
         String content
 ) {
+
 }

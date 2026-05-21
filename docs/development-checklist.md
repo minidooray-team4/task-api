@@ -27,20 +27,20 @@
 - [X] Task 생성 API를 구현한다.
 - [X] Task 수정 API를 구현한다.
 - [X] Task 삭제 API를 구현한다.
-- [ ] Task 상세 조회 API를 구현한다.
-- [ ] 프로젝트별 Task 목록 조회 API를 구현한다.
+- [X] Task 상세 조회 API를 구현한다.
+- [X] 프로젝트별 Task 목록 조회 API를 구현한다.
 - [ ] milestoneId 필터를 적용한다.
 - [ ] tagId 필터를 적용한다.
-- [ ] Task에 Milestone 지정 API를 구현한다.
-- [ ] Task에서 Milestone 제거 API를 구현한다.
+- [X] Task에 Milestone 지정 API를 구현한다.
+- [X] Task에서 Milestone 제거 API를 구현한다.
 - [ ] Task와 Milestone이 같은 프로젝트에 속하는지 서비스와 DB 제약으로 검증한다.
 
 ## Comment
 
-- [ ] 댓글 생성 API를 구현한다.
-- [ ] 댓글 목록 조회 API를 구현한다.
-- [ ] 댓글 수정 API를 구현한다.
-- [ ] 댓글 삭제 API를 구현한다.
+- [X] 댓글 생성 API를 구현한다.
+- [X] 댓글 목록 조회 API를 구현한다.
+- [X] 댓글 수정 API를 구현한다.
+- [X] 댓글 삭제 API를 구현한다.
 - [ ] 댓글 작성자 또는 프로젝트 권한 기준 수정/삭제 정책을 확정한다.
 
 ## Tag
