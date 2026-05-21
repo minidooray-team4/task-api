@@ -6,4 +6,7 @@ public record GetProjectTasksQuery(
         Long tagId,
         Long requesterMemberId
 ) {
+    public static GetProjectTasksQuery toQuery(Long projectId, Long milestoneId, Long tagId, Long writerMemberId) {
+        return new GetProjectTasksQuery(projectId, milestoneId, tagId, writerMemberId);
+    }
 }

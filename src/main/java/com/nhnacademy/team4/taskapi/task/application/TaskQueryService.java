@@ -40,8 +40,15 @@ public class TaskQueryService {
     private final CommentRepository commentRepository;
 
     public List<TaskSummaryResult> getProjectTasks(GetProjectTasksQuery query) {
-        //미구현
-        return List.of();
+
+        // 프로젝트 멤버인지 검증
+        validateProjectAccess(query.projectId(), query.requesterMemberId());
+
+        List<Task> tasks = taskRepository.findByProject_Id(query.projectId());
+        return tasks.stream()
+                .map(TaskSummaryResult::from)
+                .toList();
+
     }
 
 
