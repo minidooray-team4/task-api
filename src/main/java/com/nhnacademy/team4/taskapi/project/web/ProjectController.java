@@ -4,41 +4,41 @@ package com.nhnacademy.team4.taskapi.project.web;
 import com.nhnacademy.team4.taskapi.project.application.command.AddProjectMemberCommand;
 import com.nhnacademy.team4.taskapi.project.application.command.CreateProjectCommand;
 import com.nhnacademy.team4.taskapi.project.application.command.UpdateProjectCommand;
+import com.nhnacademy.team4.taskapi.project.application.ProjectCommandService;
+import com.nhnacademy.team4.taskapi.project.application.ProjectQueryService;
 import com.nhnacademy.team4.taskapi.project.application.result.ProjectDetailResult;
+import com.nhnacademy.team4.taskapi.project.application.result.ProjectMemberResult;
 import com.nhnacademy.team4.taskapi.project.application.result.ProjectSummaryResult;
-import com.nhnacademy.team4.taskapi.project.application.usecase.*;
 import com.nhnacademy.team4.taskapi.project.web.request.CreateProjectRequest;
 import com.nhnacademy.team4.taskapi.project.web.request.UpdateProjectRequest;
+import com.nhnacademy.team4.taskapi.project.web.response.CreatedProjectResponse;
 import com.nhnacademy.team4.taskapi.project.web.response.ProjectDetailResponse;
+import com.nhnacademy.team4.taskapi.project.web.response.ProjectMemberResponse;
 import com.nhnacademy.team4.taskapi.project.web.response.ProjectSummaryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/projects")
 public class ProjectController {
-    private final CreateProjectUseCase createProjectUseCase;
-    private final AddProjectMemberUseCase addProjectMemberUseCase;
-    private final UpdateProjectUseCase updateProjectUseCase;
-    private final GetMyProjectUseCase getMyProjectUseCase;
-    private final GetProjectDetailUseCase getProjectDetailUseCase;
+    private final ProjectCommandService projectCommandService;
+    private final ProjectQueryService projectQueryService;
 
     @PostMapping
-    public ResponseEntity<ProjectSummaryResponse> createProject(
+    public ResponseEntity<CreatedProjectResponse> createProject(
             @RequestHeader("X-MEMBER-ID") Long writerMemberId,
             @RequestBody CreateProjectRequest request
     ) {
         CreateProjectCommand command = request.toCreateProjectCommand(writerMemberId);
 
-        ProjectSummaryResult result = createProjectUseCase.createProject(command);
+        Long projectId = projectCommandService.createProject(command);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ProjectSummaryResponse.from(result));
+                .body(new CreatedProjectResponse(projectId));
 
     }
 
@@ -50,33 +50,33 @@ public class ProjectController {
     ) {
         AddProjectMemberCommand command = AddProjectMemberCommand.create(projectId, memberId, writerMemberId);
 
-        addProjectMemberUseCase.addProjectMember(command);
+        projectCommandService.addProjectMember(command);
 
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT).build();
     }
 
     @PatchMapping("/{projectId}")
-    public ResponseEntity<ProjectSummaryResponse> updateProject(
+    public ResponseEntity<Void> updateProject(
             @RequestHeader("X-MEMBER-ID") Long writerMemberId,
             @PathVariable Long projectId,
             @RequestBody UpdateProjectRequest request
     ) {
         UpdateProjectCommand command = request.toUpdateProjectCommand(projectId, writerMemberId);
 
-        ProjectSummaryResult result = updateProjectUseCase.updateProject(command);
+        projectCommandService.updateProject(command);
 
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ProjectSummaryResponse.from(result));
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
     @GetMapping("/{projectId}")
     public ResponseEntity<ProjectDetailResponse> getProjectDetail(
             @RequestHeader("X-MEMBER-ID") Long writerMemberId,
             @PathVariable Long projectId
-    ){
-        ProjectDetailResult result = getProjectDetailUseCase.getProjectDetail(projectId,writerMemberId);
+    ) {
+        ProjectDetailResult result = projectQueryService.getProjectDetail(projectId, writerMemberId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -86,15 +86,31 @@ public class ProjectController {
     @GetMapping
     public ResponseEntity<List<ProjectSummaryResponse>> findMyProjects(
             @RequestHeader("X-MEMBER-ID") Long writerMemberId
-    )
-    {
+    ) {
         List<ProjectSummaryResult> myProjects =
-                getMyProjectUseCase.getMyProjects(writerMemberId);
+                projectQueryService.getMyProjects(writerMemberId);
 
         List<ProjectSummaryResponse> responses = myProjects.stream()
                 .map(ProjectSummaryResponse::from)
                 .toList();
 
         return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/{projectId}/members")
+    public ResponseEntity<List<ProjectMemberResponse>> getProjectMembers(
+            @RequestHeader("X-MEMBER-ID") Long writerMemberId,
+            @PathVariable Long projectId
+    ) {
+        List<ProjectMemberResult> projectMembers = projectQueryService.getProjectMembers(projectId, writerMemberId);
+
+        List<ProjectMemberResponse> responses = projectMembers.stream()
+                .map(ProjectMemberResponse::from)
+                .toList();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responses);
+
     }
 }

@@ -5,58 +5,39 @@ import com.nhnacademy.team4.taskapi.global.exception.ErrorCode;
 import com.nhnacademy.team4.taskapi.project.application.command.AddProjectMemberCommand;
 import com.nhnacademy.team4.taskapi.project.application.command.CreateProjectCommand;
 import com.nhnacademy.team4.taskapi.project.application.command.UpdateProjectCommand;
-
-import com.nhnacademy.team4.taskapi.project.application.result.ProjectSummaryResult;
-import com.nhnacademy.team4.taskapi.project.application.usecase.AddProjectMemberUseCase;
-import com.nhnacademy.team4.taskapi.project.application.usecase.CreateProjectUseCase;
-import com.nhnacademy.team4.taskapi.project.application.usecase.UpdateProjectUseCase;
 import com.nhnacademy.team4.taskapi.project.domain.Project;
-
 import com.nhnacademy.team4.taskapi.project.domain.ProjectMembers;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectMemberRepository;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ProjectCommandService implements AddProjectMemberUseCase, CreateProjectUseCase, UpdateProjectUseCase {
+public class ProjectCommandService {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMemberRepository projectMemberRepositroy;
+    private final ProjectMemberRepository projectMemberRepository;
 
-    @Override
     public void addProjectMember(AddProjectMemberCommand command) {
 
-        log.info("ProjectId : {}", command.projectId());
         Project project = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
         // 관리자 권한 확인
-        if (!project.getAdminMemberId().equals(command.requesterMemberId())) {
-            throw new BusinessException(ErrorCode.FORBIDDEN);
-        }
+        validateProjectAdmin(project, command.requesterMemberId());
 
         // 멤버 존재유무 판별
-        boolean exists = projectMemberRepositroy.existsByProject_IdAndMemberId(
-                command.projectId(), command.targetMemberId()
-        );
-
-        if (exists) {
-            throw new BusinessException(ErrorCode.PROJECT_MEMBER_ALREADY_EXISTS);
-        }
+        validateProjectMemberNotExist(project.getId(), command.targetMemberId());
 
         ProjectMembers projectMembers = ProjectMembers.create(project, command.targetMemberId());
 
-        projectMemberRepositroy.save(projectMembers);
+        projectMemberRepository.save(projectMembers);
     }
 
-    @Override
-    public ProjectSummaryResult createProject(CreateProjectCommand command) {
+    public Long createProject(CreateProjectCommand command) {
 
         Project project = Project.create(
                 command.name(),
@@ -69,27 +50,33 @@ public class ProjectCommandService implements AddProjectMemberUseCase, CreatePro
         ProjectMembers adminMember =
                 ProjectMembers.create(saved, command.requesterMemberId());
 
-        projectMemberRepositroy.save(adminMember);
+        projectMemberRepository.save(adminMember);
 
-        return ProjectSummaryResult.from(saved);
+        return saved.getId();
 
     }
 
-    @Override
-    public ProjectSummaryResult updateProject(UpdateProjectCommand command) {
+    public void updateProject(UpdateProjectCommand command) {
 
         Project project = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
         // 관리자 권한 확인
-        if (!project.getAdminMemberId().equals(command.requesterMemberId())) {
-            throw new BusinessException(ErrorCode.FORBIDDEN);
-        }
+        validateProjectAdmin(project, command.requesterMemberId());
 
         project.update(command.name(), command.status());
-
-        return ProjectSummaryResult.from(project);
     }
 
+    private void validateProjectAdmin(Project project, Long requesterMemberId) {
+        if (!project.getAdminMemberId().equals(requesterMemberId)) {
+            throw new BusinessException(ErrorCode.FORBIDDEN);
+        }
+    }
+
+    private void validateProjectMemberNotExist(Long projectId, Long targetMemberId) {
+        if (projectMemberRepository.existsByProjectIdAndMemberId(projectId, targetMemberId)) {
+            throw new BusinessException(ErrorCode.PROJECT_MEMBER_ALREADY_EXISTS);
+        }
+    }
 
 }

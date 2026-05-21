@@ -4,8 +4,9 @@ package com.nhnacademy.team4.taskapi.tags.web;
 import com.nhnacademy.team4.taskapi.tags.application.command.AttachTagToTaskCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.CreateTagCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.DetachTagFromTaskCommand;
+import com.nhnacademy.team4.taskapi.tags.application.TagCommandService;
+import com.nhnacademy.team4.taskapi.tags.application.TagQueryService;
 import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
-import com.nhnacademy.team4.taskapi.tags.application.usecase.*;
 import com.nhnacademy.team4.taskapi.tags.web.request.CreateTagRequest;
 import com.nhnacademy.team4.taskapi.tags.web.request.UpdateTagRequest;
 import com.nhnacademy.team4.taskapi.tags.web.response.TagResponse;
@@ -20,26 +21,20 @@ import java.util.List;
 @RestController //@Controller + @ResponseBody 합친놈, 반환값을 JSON으로 변환
 @RequestMapping("/api")
 public class TagController {
-
-    private final CreateTagUseCase createTagUseCase;
-    private final DeleteTagUseCase deleteTagUseCase;
-    private final UpdateTagUseCase updateTagUseCase;
-    private final GetProjectTagsUseCase getProjectTagsUseCase;
-    private final AttachTagToTaskUseCase attachTagToTaskUseCase;
-    private final DetachTagFromTaskUseCase detachTagFromTaskUseCase;
+    private final TagCommandService tagCommandService;
+    private final TagQueryService tagQueryService;
 
     @PostMapping("/projects/{projectId}/tags")
-    public ResponseEntity<TagResponse> addTag(
+    public ResponseEntity<Void> addTag(
             @PathVariable Long projectId,
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId,
             @RequestBody CreateTagRequest request
     ){
-        CreateTagCommand command=request.toCreateTagCommand(projectId,requesterMemberId);
-        TagResult tagResult=createTagUseCase.createTag(command);
+        tagCommandService.createTag(request.toCreateTagCommand(projectId,requesterMemberId));
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(TagResponse.from(tagResult));
+                .build();
     }
 
     @GetMapping("/projects/{projectId}/tags")
@@ -47,22 +42,22 @@ public class TagController {
             @PathVariable Long projectId,
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId
     ){
-        List<TagResult> tagResults=getProjectTagsUseCase.getProjectTags(projectId,requesterMemberId);
+        List<TagResult> tagResults=tagQueryService.getProjectTags(projectId,requesterMemberId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(tagResults.stream().map(TagResponse::from).toList());
     }
 
     @PatchMapping("/tags/{tagId}")
-    public ResponseEntity<TagResponse> updateTag(
+    public ResponseEntity<Void> updateTag(
             @PathVariable Long tagId,
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId,
             @RequestBody UpdateTagRequest request
     ){
-        TagResult tagResult=updateTagUseCase.updateTag(request.toUpdateTagCommand(tagId,requesterMemberId));
+        tagCommandService.updateTag(request.toUpdateTagCommand(tagId,requesterMemberId));
+
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(TagResponse.from(tagResult));
+                .status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/tags/{tagId}")
@@ -71,7 +66,7 @@ public class TagController {
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId
 
     ){
-        deleteTagUseCase.deleteTag(tagId,requesterMemberId);
+        tagCommandService.deleteTag(tagId,requesterMemberId);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
@@ -83,7 +78,7 @@ public class TagController {
             @PathVariable Long tagId,
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId
     ){
-        attachTagToTaskUseCase.attachTagToTask(new AttachTagToTaskCommand(taskId,tagId,requesterMemberId));
+        tagCommandService.attachTagToTask(new AttachTagToTaskCommand(taskId,tagId,requesterMemberId));
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
@@ -95,9 +90,10 @@ public class TagController {
             @PathVariable Long tagId,
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId
     ){
-        detachTagFromTaskUseCase.detachTagFromTask(new DetachTagFromTaskCommand(taskId,tagId,requesterMemberId));
+        tagCommandService.detachTagFromTask(new DetachTagFromTaskCommand(taskId,tagId,requesterMemberId));
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
+
 }
