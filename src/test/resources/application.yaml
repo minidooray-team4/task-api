@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: task-api
+  profiles:
+    active: test
+  jpa:
+    open-in-view: false

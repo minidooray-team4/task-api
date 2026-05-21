@@ -34,11 +34,10 @@ public class ProjectQueryService {
     private final MilestoneRepository milestoneRepository;
 
     public List<ProjectSummaryResult> getMyProjects(Long memberId) {
-        List<ProjectMembers> myProjects =
-                projectMemberRepository.findByMemberId(memberId);
+        List<Project> myProjects =
+                projectMemberRepository.findProjectsByMemberId(memberId);
 
         return myProjects.stream()
-                .map(ProjectMembers::getProject)
                 .map(ProjectSummaryResult::from)
                 .toList();
     }
@@ -53,7 +52,7 @@ public class ProjectQueryService {
 
         ProjectSummaryResult summary = ProjectSummaryResult.from(project);
 
-        List<ProjectMemberResult> members = projectMemberRepository.findByProjectId(projectId)
+        List<ProjectMemberResult> members = projectMemberRepository.findByProject_Id(projectId)
                 .stream().map(ProjectMemberResult::from).toList();
 
         List<TaskSummaryResult> tasks = taskRepository.findByProject_Id(projectId)
@@ -80,7 +79,7 @@ public class ProjectQueryService {
         // Project 존재유무 및 멤버인지 검증
         validateProjectAccess(projectId, requesterMemberId);
 
-        List<ProjectMembers> members = projectMemberRepository.findByProjectId(projectId);
+        List<ProjectMembers> members = projectMemberRepository.findByProject_Id(projectId);
 
         return members.stream()
                 .map(ProjectMemberResult::from)
