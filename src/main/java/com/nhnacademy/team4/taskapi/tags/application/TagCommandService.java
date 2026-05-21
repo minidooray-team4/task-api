@@ -84,7 +84,10 @@ public class TagCommandService {
         Tag tag = tagRepository.findById(command.tagId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.TAG_NOT_FOUND));
 
-        taskTagRepository.deleteByTask_IdAndTag_Id(command.taskId(), command.tagId());
+        int deleted=taskTagRepository.deleteByTask_IdAndTag_Id(command.taskId(),command.tagId());
+        if(deleted==0){
+            throw new BusinessException(ErrorCode.TASK_TAG_NOT_FOUND);
+        }
     }
 
 }
