@@ -44,21 +44,21 @@ class TagCommandServiceTest {
     @Test
     @DisplayName("태그 생성")
     void createTag() {
-        CreateTagCommand command=new CreateTagCommand(1L,100L,"backend");
-        Project project=mock(Project.class);
+        CreateTagCommand command = new CreateTagCommand(1L, 100L, "backend");
+        Project project = mock(Project.class);
 
         given(projectRepository.findById(1L)).willReturn(Optional.of(project));
-        given(tagRepository.existsByProjectIdAndName(1L,"backend")).willReturn(false);
+        given(tagRepository.existsByProjectIdAndName(1L, "backend")).willReturn(false);
         given(project.getId()).willReturn(1L);
     }
 
     @Test
     @DisplayName("태그 삭제")
     void deleteTag() {
-        Tag tag=mock(Tag.class);
+        Tag tag = mock(Tag.class);
 
         given(tagRepository.findById(1L)).willReturn(Optional.of(tag));
-        tagCommandService.deleteTag(1L,100L);
+        tagCommandService.deleteTag(1L, 100L);
         verify(tagRepository).delete(tag);
     }
 
@@ -75,5 +75,6 @@ class TagCommandServiceTest {
     }
 
     @Test
-    void getProjectTags(){}
+    void getProjectTags() {
+    }
 }
