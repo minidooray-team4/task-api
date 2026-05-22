@@ -93,6 +93,7 @@ class ProjectMemberRepositoryTest {
 
     @Test
     void findByMemberId() {
+
         Project project1 = createProject(PROJECT_ADMIN_ID1);
         Project project2 = createProject(PROJECT_ADMIN_ID2);
 
