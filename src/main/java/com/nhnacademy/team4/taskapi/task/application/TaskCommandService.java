@@ -125,6 +125,10 @@ public class TaskCommandService {
         // 프로젝트 멤버 검증
         validateProjectMember(task.getProjectId(), requesterMemberId);
 
+        //삭제전 마일스톤,태그 삭제
+        task.detachMilestone();
+        taskTagRepository.deleteByTask_Id(taskId);
+
         taskRepository.deleteById(taskId);
     }
 

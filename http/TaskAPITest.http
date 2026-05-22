@@ -41,3 +41,7 @@ Content-Type: application/json
 X-MEMBER-ID: 100
 
 
+### Task 목록 API
+GET http://localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+X-MEMBER-ID: 100

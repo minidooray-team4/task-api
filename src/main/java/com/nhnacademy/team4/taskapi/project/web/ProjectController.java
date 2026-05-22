@@ -15,6 +15,7 @@ import com.nhnacademy.team4.taskapi.project.web.response.CreatedProjectResponse;
 import com.nhnacademy.team4.taskapi.project.web.response.ProjectDetailResponse;
 import com.nhnacademy.team4.taskapi.project.web.response.ProjectMemberResponse;
 import com.nhnacademy.team4.taskapi.project.web.response.ProjectSummaryResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class ProjectController {
     @PostMapping
     public ResponseEntity<CreatedProjectResponse> createProject(
             @RequestHeader("X-MEMBER-ID") Long writerMemberId,
-            @RequestBody CreateProjectRequest request
+            @Valid @RequestBody CreateProjectRequest request
     ) {
         CreateProjectCommand command = request.toCreateProjectCommand(writerMemberId);
 

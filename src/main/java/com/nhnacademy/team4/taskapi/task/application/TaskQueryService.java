@@ -40,16 +40,20 @@ public class TaskQueryService {
     private final CommentRepository commentRepository;
 
     public List<TaskSummaryResult> getProjectTasks(GetProjectTasksQuery query) {
-        //미구현
-        return List.of();
+        validateProjectAccess(query.projectId(), query.requesterMemberId());
+
+        List<Task> tasks = taskRepository.findByProject_Id(query.projectId());
+        return tasks.stream()
+                .map(TaskSummaryResult::from)
+                .toList();
     }
 
 
-    public TaskDetailResult getTaskDetail(Long taskId) {
+    public TaskDetailResult getTaskDetail(Long taskId, Long requesterMemberId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new BusinessException(TASK_NOT_FOUND));
 
-        validateProjectAccess(task.getProjectId(), task.getWriterMemberId());
+        validateProjectAccess(task.getProjectId(), requesterMemberId);
 
         List<TagResult> tagList = taskTagRepository.findByTask_Id(taskId)
                 .stream()
