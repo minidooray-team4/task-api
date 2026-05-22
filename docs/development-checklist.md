@@ -10,6 +10,7 @@
 - [X] 조회 전용 서비스에는 read-only 트랜잭션을 적용한다.
 - [X] Result DTO와 Response DTO 변환 메서드를 일관되게 유지한다.
 - [X] API 성공 상태 코드가 문서와 컨트롤러에서 일치하는지 확인한다.
+- [ ] 컨트롤러 테스트에서 오류 상태 코드는 [error-status-codes.md](/Users/dabin/NHN_BootCamp/task-api/docs/error-status-codes.md)를 기준으로 검증한다.
 
 ## Project
 
