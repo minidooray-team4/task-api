@@ -1,5 +1,6 @@
 package com.nhnacademy.team4.taskapi.tags.application;
 
+import com.nhnacademy.team4.taskapi.global.exception.BusinessException;
 import com.nhnacademy.team4.taskapi.project.domain.Project;
 import com.nhnacademy.team4.taskapi.project.infrastructure.ProjectRepository;
 import com.nhnacademy.team4.taskapi.tags.application.command.AttachTagToTaskCommand;
@@ -61,6 +62,17 @@ class TagCommandServiceTest {
     }
 
     @Test
+    @DisplayName("태그 생성-예외")
+    void createTag2() {
+        CreateTagCommand command=new CreateTagCommand(999L,100L,"backend");
+        given(projectRepository.findById(999L)).willReturn(Optional.empty());
+
+        assertThrows(BusinessException.class,
+                ()->tagCommandService.createTag(command));
+
+    }
+
+    @Test
     @DisplayName("태그 삭제")
     void deleteTag() {
         Tag tag=mock(Tag.class);
@@ -71,6 +83,17 @@ class TagCommandServiceTest {
     }
 
     @Test
+    @DisplayName("태그 삭제-예외")
+    void deleteTag2() {
+        given(tagRepository.findById(999L)).willReturn(Optional.empty());
+
+        assertThrows(BusinessException.class,
+                ()->tagCommandService.deleteTag(999L,100L));
+
+    }
+
+    @Test
+    @DisplayName("태그 수정")
     void updateTag() {
         UpdateTagCommand command=new UpdateTagCommand(1L,100L,"newName");
         Tag tag=mock(Tag.class);
@@ -81,6 +104,17 @@ class TagCommandServiceTest {
     }
 
     @Test
+    @DisplayName("태그 수정-예외")
+    void updateTag2() {
+        UpdateTagCommand command=new UpdateTagCommand(999L,100L,"newName");
+        given(tagRepository.findById(999L)).willReturn(Optional.empty());
+
+        assertThrows(BusinessException.class,
+                ()->tagCommandService.updateTag(command));
+    }
+
+    @Test
+    @DisplayName("태스크에 태그 연결")
     void attachTagToTask() {
         AttachTagToTaskCommand command=new AttachTagToTaskCommand(1L,1L,100L);
         Task task=mock(Task.class);
@@ -99,16 +133,37 @@ class TagCommandServiceTest {
     }
 
     @Test
-    void detachTagFromTask() {
-        DetachTagFromTaskCommand command=new DetachTagFromTaskCommand(1L,1L,100L);
-        Task task=mock(Task.class);
-        Tag tag=mock(Tag.class);
+    @DisplayName("태스크에 태그 연결-Task 없음 예외")
+    void attachTagToTask2() {
+        AttachTagToTaskCommand command=new AttachTagToTaskCommand(999L,1L,100L);
+        given(taskRepository.findById(999L)).willReturn(Optional.empty());
 
-        given(taskRepository.findById(1L)).willReturn(Optional.of(task));
-        given(tagRepository.findById(1L)).willReturn(Optional.of(tag));
+        assertThrows(BusinessException.class,
+                ()->tagCommandService.attachTagToTask(command));
+    }
+
+    @Test
+    @DisplayName("태스크에서 태그 제거")
+    void detachTagFromTask() {
+        DetachTagFromTaskCommand command = new DetachTagFromTaskCommand(1L, 1L, 100L);
+
+        given(tagRepository.findById(1L)).willReturn(Optional.of(mock(Tag.class)));
+        given(taskRepository.findById(1L)).willReturn(Optional.of(mock(Task.class)));
         given(taskTagRepository.deleteByTask_IdAndTag_Id(1L,1L)).willReturn(1);
 
         tagCommandService.detachTagFromTask(command);
         verify(taskTagRepository).deleteByTask_IdAndTag_Id(1L,1L);
+    }
+
+    @Test
+    @DisplayName("태스크에서 태그 제거 - Task 없음 예외")
+    void detachTagFromTask2() {
+        DetachTagFromTaskCommand command = new DetachTagFromTaskCommand(999L, 1L, 100L);
+
+        given(tagRepository.findById(1L)).willReturn(Optional.of(mock(Tag.class)));
+        given(taskRepository.findById(999L)).willReturn(Optional.empty());
+
+        assertThrows(BusinessException.class,
+                () -> tagCommandService.detachTagFromTask(command));
     }
 }
