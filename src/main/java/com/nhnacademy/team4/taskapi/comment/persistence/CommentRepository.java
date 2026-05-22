@@ -2,7 +2,6 @@ package com.nhnacademy.team4.taskapi.comment.persistence;
 
 
 import com.nhnacademy.team4.taskapi.comment.domain.Comment;
-import com.nhnacademy.team4.taskapi.task.domain.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -64,6 +64,10 @@ public class ProjectCommandService {
         // 관리자 권한 확인
         validateProjectAdmin(project, command.requesterMemberId());
 
+        if (command.name() != null && command.name().isBlank()) {
+            throw new BusinessException(ErrorCode.INVALID_REQUEST);
+        }
+
         project.update(command.name(), command.status());
     }
 
