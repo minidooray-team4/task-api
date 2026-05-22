@@ -7,6 +7,7 @@ import com.nhnacademy.team4.taskapi.project.application.ProjectQueryService;
 import com.nhnacademy.team4.taskapi.project.application.command.AddProjectMemberCommand;
 import com.nhnacademy.team4.taskapi.project.application.command.UpdateProjectCommand;
 import com.nhnacademy.team4.taskapi.project.application.result.ProjectDetailResult;
+import com.nhnacademy.team4.taskapi.project.application.result.ProjectMemberResult;
 import com.nhnacademy.team4.taskapi.project.application.result.ProjectSummaryResult;
 import com.nhnacademy.team4.taskapi.project.domain.Status;
 import com.nhnacademy.team4.taskapi.project.web.request.CreateProjectRequest;
@@ -190,13 +191,16 @@ class ProjectControllerTest {
 
     @Test
     void findProjectMembers_success() throws Exception {
+        List<ProjectMemberResult> memberResults = List.of(new ProjectMemberResult(1L, 1L, 100L));
         Mockito.when(projectQueryService.getProjectMembers(anyLong(), anyLong()))
-                .thenReturn(List.of());
+                .thenReturn(memberResults);
 
         mockMvc.perform(get("/api/projects/1/members")
                         .header(X_MEMBER_ID, 100L)
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].projectId").value(1))
+                .andExpect(jsonPath("$.[0].memberId").value(100L));
     }
 
     @Test

@@ -2,8 +2,6 @@ package com.nhnacademy.team4.taskapi.project.domain;
 
 import com.nhnacademy.team4.taskapi.common.domain.BaseTimeEntity;
 
-import com.nhnacademy.team4.taskapi.global.exception.BusinessException;
-import com.nhnacademy.team4.taskapi.global.exception.ErrorCode;
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
@@ -49,9 +47,6 @@ public class Project extends BaseTimeEntity {
 
     public void update(String name,Status status){
         if(name != null){
-            if(name.isBlank()){
-                throw new BusinessException(ErrorCode.INVALID_REQUEST);
-            }
             this.name = name;
         }
 
