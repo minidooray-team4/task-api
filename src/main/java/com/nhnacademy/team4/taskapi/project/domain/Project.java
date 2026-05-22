@@ -49,9 +49,6 @@ public class Project extends BaseTimeEntity {
 
     public void update(String name,Status status){
         if(name != null){
-            if(name.isBlank()){
-                throw new BusinessException(ErrorCode.INVALID_REQUEST);
-            }
             this.name = name;
         }
 
