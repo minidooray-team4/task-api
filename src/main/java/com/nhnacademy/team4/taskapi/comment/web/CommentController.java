@@ -8,6 +8,7 @@ import com.nhnacademy.team4.taskapi.comment.application.result.CommentResult;
 import com.nhnacademy.team4.taskapi.comment.web.request.CreateCommentRequest;
 import com.nhnacademy.team4.taskapi.comment.web.request.UpdateCommentRequest;
 import com.nhnacademy.team4.taskapi.comment.web.response.CommentResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class CommentController {
     public ResponseEntity<Void> createComment(
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId,
             @PathVariable Long taskId,
-            @RequestBody CreateCommentRequest request
+            @Valid @RequestBody CreateCommentRequest request
     ) {
         CreateCommentCommand command = request.toCommand(taskId, requesterMemberId);
 
@@ -60,7 +61,7 @@ public class CommentController {
     public ResponseEntity<Void> updateComment(
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId,
             @PathVariable Long commentId,
-            @RequestBody UpdateCommentRequest request
+            @Valid @RequestBody UpdateCommentRequest request
     ) {
         UpdateCommentCommand command = request.toCommand(commentId, requesterMemberId);
         commentCommandService.updateComment(command);
@@ -71,11 +72,15 @@ public class CommentController {
     }
 
     @DeleteMapping("/comments/{commentId}")
-    public void deleteComment(
+    public ResponseEntity<Void> deleteComment(
             @RequestHeader("X-MEMBER-ID") Long requesterMemberId,
             @PathVariable Long commentId
     ) {
         commentCommandService.deleteComment(commentId, requesterMemberId);
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
 
     }
 

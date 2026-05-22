@@ -1,5 +1,6 @@
 package com.nhnacademy.team4.taskapi.project.infrastructure;
 
+import com.nhnacademy.team4.taskapi.config.TestJpaConfig;
 import com.nhnacademy.team4.taskapi.project.domain.Project;
 
 import com.nhnacademy.team4.taskapi.project.domain.ProjectMembers;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
+@Import(TestJpaConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ProjectMemberRepositoryTest {
     private static final Long PROJECT_ADMIN_ID1 = 1L;
