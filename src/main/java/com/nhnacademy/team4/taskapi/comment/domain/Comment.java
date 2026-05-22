@@ -51,6 +51,4 @@ public class Comment extends BaseTimeEntity {
             this.content = content;
         }
     }
-
-
 }
