@@ -2,7 +2,10 @@ package com.nhnacademy.team4.taskapi.task.domain;
 
 import com.nhnacademy.team4.taskapi.tags.domain.Tag;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity

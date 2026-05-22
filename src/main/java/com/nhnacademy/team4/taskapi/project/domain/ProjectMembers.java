@@ -2,7 +2,10 @@ package com.nhnacademy.team4.taskapi.project.domain;
 
 import com.nhnacademy.team4.taskapi.common.domain.BaseCreatedAtEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter

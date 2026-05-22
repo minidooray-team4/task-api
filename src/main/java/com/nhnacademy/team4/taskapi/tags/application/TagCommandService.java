@@ -9,7 +9,6 @@ import com.nhnacademy.team4.taskapi.tags.application.command.AttachTagToTaskComm
 import com.nhnacademy.team4.taskapi.tags.application.command.CreateTagCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.DetachTagFromTaskCommand;
 import com.nhnacademy.team4.taskapi.tags.application.command.UpdateTagCommand;
-import com.nhnacademy.team4.taskapi.tags.application.result.TagResult;
 import com.nhnacademy.team4.taskapi.tags.domain.Tag;
 import com.nhnacademy.team4.taskapi.tags.persistence.TagRepository;
 import com.nhnacademy.team4.taskapi.task.domain.Task;
