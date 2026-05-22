@@ -10,16 +10,13 @@ import com.nhnacademy.team4.taskapi.comment.web.request.UpdateCommentRequest;
 import com.nhnacademy.team4.taskapi.global.exception.BusinessException;
 import com.nhnacademy.team4.taskapi.global.exception.ErrorCode;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-
 import tools.jackson.databind.ObjectMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -122,8 +119,8 @@ class CommentControllerTest {
     }
 
     @Test
-    void getComment_fail_TaskNotFound() throws Exception {
-        doThrow(new BusinessException(ErrorCode.TASK_NOT_FOUND))
+    void getComment_fail_CommentNotFound() throws Exception {
+        doThrow(new BusinessException(ErrorCode.COMMENT_NOT_FOUND))
                 .when(commentQueryService)
                 .getComments(anyLong(), anyLong());
 
@@ -163,11 +160,11 @@ class CommentControllerTest {
     }
 
     @Test
-    void updateComment_fail_TaskNotFound() throws Exception {
+    void updateComment_fail_CommentNotFound() throws Exception {
 
         UpdateCommentRequest request = new UpdateCommentRequest("Content");
 
-        doThrow(new BusinessException(ErrorCode.TASK_NOT_FOUND))
+        doThrow(new BusinessException(ErrorCode.COMMENT_NOT_FOUND))
                 .when(commentCommandService)
                 .updateComment(any(UpdateCommentCommand.class));
 
