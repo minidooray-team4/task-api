@@ -1,6 +1,8 @@
 package com.nhnacademy.team4.taskapi.task.domain;
 
 import com.nhnacademy.team4.taskapi.common.domain.BaseTimeEntity;
+import com.nhnacademy.team4.taskapi.global.exception.BusinessException;
+import com.nhnacademy.team4.taskapi.global.exception.ErrorCode;
 import com.nhnacademy.team4.taskapi.milestone.domain.Milestone;
 import com.nhnacademy.team4.taskapi.project.domain.Project;
 import jakarta.persistence.*;
@@ -105,6 +107,9 @@ public class Task extends BaseTimeEntity {
 
     public void update(String title, String content) {
         if (title != null) {
+            if (title.isBlank()) {
+                throw new BusinessException(ErrorCode.INVALID_REQUEST);
+            }
             this.title = title;
         }
 

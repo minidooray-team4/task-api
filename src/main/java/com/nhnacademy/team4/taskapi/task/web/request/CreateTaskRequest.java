@@ -2,9 +2,10 @@ package com.nhnacademy.team4.taskapi.task.web.request;
 
 
 import com.nhnacademy.team4.taskapi.task.application.command.CreateTaskCommand;
+import jakarta.validation.constraints.NotBlank;
 
 public record CreateTaskRequest(
-        String title,
+        @NotBlank String title,
         String content,
         Long milestoneId)
 {

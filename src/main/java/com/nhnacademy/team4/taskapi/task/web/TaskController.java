@@ -14,8 +14,8 @@ import com.nhnacademy.team4.taskapi.task.web.request.CreateTaskRequest;
 import com.nhnacademy.team4.taskapi.task.web.request.UpdateTaskRequest;
 import com.nhnacademy.team4.taskapi.task.web.response.TaskDetailResponse;
 
-import com.nhnacademy.team4.taskapi.task.web.response.TaskResponse;
 import com.nhnacademy.team4.taskapi.task.web.response.TaskSummaryResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -36,7 +36,7 @@ public class TaskController {
     public ResponseEntity<Void> addTask(
             @PathVariable Long projectId,
             @RequestHeader("X-MEMBER-ID") Long writerMemberId,
-            @RequestBody CreateTaskRequest request
+            @Valid @RequestBody CreateTaskRequest request
     ) {
         CreateTaskCommand command = request.toCreateTaskCommand(projectId, writerMemberId);
 
@@ -47,10 +47,11 @@ public class TaskController {
 
     @GetMapping("/tasks/{taskId}")
     public ResponseEntity<TaskDetailResponse> getTaskDetails(
-            @PathVariable Long taskId
+            @PathVariable Long taskId,
+            @RequestHeader("X-MEMBER-ID") Long writerMemberId
 
     ) {
-        TaskDetailResult taskDetail = taskQueryService.getTaskDetail(taskId);
+        TaskDetailResult taskDetail = taskQueryService.getTaskDetail(taskId,writerMemberId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(TaskDetailResponse.from(taskDetail));
@@ -92,7 +93,7 @@ public class TaskController {
         taskCommandService.assignMilestoneToTask(command);
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.NO_CONTENT)
                 .build();
     }
 
