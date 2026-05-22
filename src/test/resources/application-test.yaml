@@ -1,6 +1,8 @@
 spring:
   datasource:
-
+    url: jdbc:mysql://10.116.64.14:13306/nhn_academy_41
+    username: nhn_academy_41
+    password: l8Oh!b594O5@o5pe
   jpa:
     open-in-view: false
     show-sql: true
