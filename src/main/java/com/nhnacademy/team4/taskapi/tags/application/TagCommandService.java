@@ -59,7 +59,6 @@ public class TagCommandService {
     }
 
     public void attachTagToTask(AttachTagToTaskCommand command) {
-        //TODO task_tags 구현 후
         Task task = taskRepository.findById(command.taskId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND));
 
@@ -80,9 +79,10 @@ public class TagCommandService {
     }
 
     public void detachTagFromTask(DetachTagFromTaskCommand command) {
-        //TODO task_tags 구현 후
-        Tag tag = tagRepository.findById(command.tagId())
+        tagRepository.findById(command.tagId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.TAG_NOT_FOUND));
+        taskRepository.findById(command.taskId())
+                .orElseThrow(()->new BusinessException(ErrorCode.TASK_NOT_FOUND));
 
         int deleted=taskTagRepository.deleteByTask_IdAndTag_Id(command.taskId(),command.tagId());
         if(deleted==0){
