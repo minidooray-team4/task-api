@@ -96,11 +96,12 @@ class TagCommandServiceTest {
     @DisplayName("태그 수정")
     void updateTag() {
         UpdateTagCommand command=new UpdateTagCommand(1L,100L,"newName");
-        Tag tag=mock(Tag.class);
+        Project project=mock(Project.class);
+        Tag tag=Tag.create(project,"oldName");
         given(tagRepository.findById(1L)).willReturn(Optional.of(tag));
 
         tagCommandService.updateTag(command);
-        verify(tag).rename("newName");
+        assertEquals("newName",tag.getName());
     }
 
     @Test
